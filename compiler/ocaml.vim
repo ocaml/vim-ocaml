@@ -1,7 +1,10 @@
 " Vim Compiler File
-" Compiler:	ocaml
-" Maintainer:	See ftplugin/ocaml.vim (?)
-" Last Change:	June 2013 by Marc Weber
+" Compiler:    ocaml
+" Maintainer:  Markus Mottl <markus.mottl@gmail.com>
+" URL:         http://www.ocaml.info/vim/compiler/ocaml.vim
+" Last Change:
+"              2013 Aug 27 - Added a new OCaml error format (Markus Mottl)
+"              2013 Jun 30 - Initial version (Marc Weber)
 "
 " Marc Weber's comments:
 " Setting makeprg doesn't make sense, because there is ocamlc, ocamlopt,
@@ -28,6 +31,7 @@ set cpo&vim
 
 CompilerSet errorformat =
       \%EFile\ \"%f\"\\,\ line\ %l\\,\ characters\ %c-%*\\d:,
+      \%EFile\ \"%f\"\\,\ line\ %l\\,\ characters\ %c-%*\\d\ %.%#,
       \%EFile\ \"%f\"\\,\ line\ %l\\,\ character\ %c:%m,
       \%+EReference\ to\ unbound\ regexp\ name\ %m,
       \%Eocamlyacc:\ e\ -\ line\ %l\ of\ \"%f\"\\,\ %m,
