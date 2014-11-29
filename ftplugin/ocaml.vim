@@ -7,10 +7,10 @@
 "              Vincent Aravantinos <firstname.name@imag.fr>
 " URL:         http://www.ocaml.info/vim/ftplugin/ocaml.vim
 " Last Change:
+"              2013 Oct 27 - Added commentstring (MM)
 "              2013 Jul 26 - load default compiler settings (MM)
 "              2013 Jul 24 - removed superfluous efm-setting (MM)
 "              2013 Jul 22 - applied fixes supplied by Hirotaka Hamada (MM)
-"              2013 Mar 15 - Improved error format (MM)
 
 if exists("b:did_ftplugin")
   finish
@@ -36,6 +36,9 @@ endif
 " Error handling -- helps moving where the compiler wants you to go
 let s:cposet=&cpoptions
 set cpo&vim
+
+" Comment string
+setlocal commentstring=(*%s*)
 
 " Add mappings, unless the user didn't want this.
 if !exists("no_plugin_maps") && !exists("no_ocaml_maps")
