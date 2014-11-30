@@ -20,6 +20,7 @@ syntax match oasisKey "License:"
 syntax match oasisKey "BuildTools:"
 syntax match oasisKey "Plugins:"
 syntax match oasisKey "Description:"
+syntax match oasisKey "AlphaFeatures:"
 
 syntax match oasisKey2 "\c\s\+Description\$\=:"
 syntax match oasisKey2 "\c\s\+Pack\$\=:"
@@ -45,7 +46,6 @@ syntax match oasisKey2 "\c\s\+XOCamlbuildPath\$\=:"
 syntax match oasisKey2 "\c\s\+XMETARequires\$\=:"
 syntax match oasisKey2 "\c\s\+XMETADescription\$\=:"
 syntax match oasisKey2 "\c\s\+InstallDir\$\=:"
-syntax match oasisKey2 "\c\s\+AlphaFeatures\$\=:"
 syntax match oasisKey2 "\c\s\+XOCamlbuildLibraries\$\=:"
 
 highlight link oasisKeyword Keyword
