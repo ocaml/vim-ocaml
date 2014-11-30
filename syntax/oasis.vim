@@ -2,7 +2,9 @@ if exists("b:current_syntax")
     finish
 endif
 
-syntax keyword oasisSection Document Executable Flag Library Document Test
+syn keyword oasisTodo FIXME NOTE NOTES TODO XXX contained
+syn match oasisComment "#.*$" contains=oasisTodo,@Spell
+syntax keyword oasisSection Document Executable Flag Library Document Test SourceRepository
 
 syntax match oasisKey "OASISFormat:"
 syntax match oasisKey "OCamlVersion:"
@@ -22,6 +24,9 @@ syntax match oasisKey "Plugins:"
 syntax match oasisKey "Description:"
 syntax match oasisKey "AlphaFeatures:"
 
+syntax match oasisKey2 "\c\s\+Index\$\=:"
+syntax match oasisKey2 "\c\s\+Format\$\=:"
+syntax match oasisKey2 "\c\s\+TestTools\$\=:"
 syntax match oasisKey2 "\c\s\+Description\$\=:"
 syntax match oasisKey2 "\c\s\+Pack\$\=:"
 syntax match oasisKey2 "\c\s\+Default\$\=:"
@@ -45,11 +50,21 @@ syntax match oasisKey2 "\c\s\+BuildTools+:"
 syntax match oasisKey2 "\c\s\+XOCamlbuildPath\$\=:"
 syntax match oasisKey2 "\c\s\+XMETARequires\$\=:"
 syntax match oasisKey2 "\c\s\+XMETADescription\$\=:"
+syntax match oasisKey2 "\c\s\+XMETAType\$\=:"
 syntax match oasisKey2 "\c\s\+InstallDir\$\=:"
 syntax match oasisKey2 "\c\s\+XOCamlbuildLibraries\$\=:"
+syntax match oasisKey2 "\c\s\+Type\$\=:"
+syntax match oasisKey2 "\c\s\+Location\$\=:"
+syntax match oasisKey2 "\c\s\+Branch\$\=:"
+syntax match oasisKey2 "\c\s\+Browser\$\=:"
+syntax match oasisKey2 "\c\s\+CSources\$\=:"
+syntax match oasisKey2 "\c\s\+CCLib\$\=:"
+syntax match oasisKey2 "\c\s\+CCOpt\$\=:"
 
 highlight link oasisSection Keyword
 highlight link oasisKey Identifier
 highlight link oasisKey2 Function
+highlight link oasisTodo Todo
+highlight link oasisComment Comment
 
 let b:current_syntax = "oasis"
