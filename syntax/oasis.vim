@@ -4,6 +4,8 @@ endif
 
 syn keyword oasisTodo FIXME NOTE NOTES TODO XXX contained
 syn match oasisComment "#.*$" contains=oasisTodo,@Spell
+syn keyword oasisPlugin META DevFiles StdFiles
+
 syntax keyword oasisSection Document Executable Flag Library Document Test SourceRepository
 
 syntax match oasisKey "OASISFormat:"
@@ -67,5 +69,6 @@ highlight link oasisKey Identifier
 highlight link oasisKey2 Function
 highlight link oasisTodo Todo
 highlight link oasisComment Comment
+highlight link oasisPlugin Type
 
 let b:current_syntax = "oasis"
