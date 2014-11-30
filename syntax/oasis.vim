@@ -2,7 +2,7 @@ if exists("b:current_syntax")
     finish
 endif
 
-syntax keyword oasisKeyword Document Executable Flag Library Document Test
+syntax keyword oasisSection Document Executable Flag Library Document Test
 
 syntax match oasisKey "OASISFormat:"
 syntax match oasisKey "OCamlVersion:"
@@ -48,7 +48,7 @@ syntax match oasisKey2 "\c\s\+XMETADescription\$\=:"
 syntax match oasisKey2 "\c\s\+InstallDir\$\=:"
 syntax match oasisKey2 "\c\s\+XOCamlbuildLibraries\$\=:"
 
-highlight link oasisKeyword Keyword
+highlight link oasisSection Keyword
 highlight link oasisKey Identifier
 highlight link oasisKey2 Function
 
