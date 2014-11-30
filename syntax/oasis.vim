@@ -2,6 +2,7 @@ if exists("b:current_syntax")
     finish
 endif
 
+syn keyword oasisSpecialFeatures ocamlbuild_more_args compiled_setup_ml pure_interface stdfiles_markdown
 syn keyword oasisTodo FIXME NOTE NOTES TODO XXX contained
 syn match oasisComment "#.*$" contains=oasisTodo,@Spell
 syn keyword oasisPlugin META DevFiles StdFiles
@@ -71,5 +72,6 @@ highlight link oasisKey2 Function
 highlight link oasisTodo Todo
 highlight link oasisComment Comment
 highlight link oasisPlugin Type
+highlight link oasisSpecialFeatures Exception 
 
 let b:current_syntax = "oasis"
