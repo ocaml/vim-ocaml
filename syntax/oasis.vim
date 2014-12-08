@@ -65,6 +65,9 @@ syntax match oasisKey2 "\c\s\+Browser\$\=:"
 syntax match oasisKey2 "\c\s\+CSources\$\=:"
 syntax match oasisKey2 "\c\s\+CCLib\$\=:"
 syntax match oasisKey2 "\c\s\+CCOpt\$\=:"
+syntax match oasisKey2 "\c\s\+ByteOpt\$\=:"
+syntax match oasisKey2 "\c\s\+NativeOpt\$\=:"
+syntax match oasisKey2 "\c\s\+Tag\$\=:"
 
 highlight link oasisSection Keyword
 highlight link oasisKey Identifier
