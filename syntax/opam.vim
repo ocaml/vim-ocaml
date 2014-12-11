@@ -4,7 +4,7 @@ endif
 
 " need %{vars}%
 " env: [[CAML_LD_LIBRARY_PATH = "%{lib}%/stublibs"]]
-syn keyword opamKeyword1 opam-version ocaml-version build remove depends depopts conflicts env packages patches version maintainer tags license homepage authors
+syn keyword opamKeyword1 opam-version ocaml-version build remove depends depopts conflicts env packages patches version maintainer tags license homepage authors doc dev-repo bug-reports install author
 syn match opamKeyword2 "\v(ocaml|opam)-version"
 
 syn keyword opamTodo FIXME NOTE NOTES TODO XXX contained
