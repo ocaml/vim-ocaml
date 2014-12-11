@@ -5,7 +5,7 @@ endif
 " need %{vars}%
 " env: [[CAML_LD_LIBRARY_PATH = "%{lib}%/stublibs"]]
 syn keyword opamKeyword1 remove depends depopts conflicts env packages patches version maintainer tags license homepage authors doc install author available
-syn match opamKeyword2 "\v(bug-reports|post-messages|ocaml-version|opam-version|dev-repo|build|build-test|build-doc)"
+syn match opamKeyword2 "\v(bug-reports|post-messages|ocaml-version|opam-version|dev-repo|build-test|build-doc|build)"
 
 syn keyword opamTodo FIXME NOTE NOTES TODO XXX contained
 syn match opamComment "#.*$" contains=opamTodo,@Spell
