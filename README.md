@@ -3,9 +3,8 @@
 Vim runtime files for OCaml. These are the default runtime files plus:
 
 * Markus Mottl's improvments from his vim files repo
-* Oasis mode
 * `:Opam` command to switch compilers from inside of vim
-* Mode for `opam` files
+* Syntax highlighting for `_oasis`, `_tags`, and `opam` files.
 
 ## Installation
 
