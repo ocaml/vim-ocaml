@@ -29,6 +29,7 @@ syntax match oasisKey "Description:"
 syntax match oasisKey "AlphaFeatures:"
 syntax match oasisKey "BetaFeatures:"
 syntax match oasisKey "PostConfCommand:"
+syntax match oasisKey "FilesAB:"
 
 syntax match oasisKey2 "\c\s\+Index\$\=:"
 syntax match oasisKey2 "\c\s\+Format\$\=:"
