@@ -1,1 +1,1 @@
-au BufRead,BufNewFile *.ml,*.mli,*.mll,*.mly,.ocamlinit,*.mlt set ft=ocaml
+au BufRead,BufNewFile *.ml,*.mli,*.mll,*.mly,.ocamlinit,*.mlt,*.mlp set ft=ocaml
