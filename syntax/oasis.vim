@@ -9,7 +9,7 @@ syn keyword oasisPlugin META DevFiles StdFiles
 
 syn match oasisOperator "(\|)\|>=\|,\|&&"
 syn match oasisVariable "$\w\+"
-syn match oasisNumber "\d\+"
+syn match oasisVersion "\d\+\(.\(\d\)\+\)\+"
 syn region oasisString start=/"/ end=/"/
 
 syntax keyword oasisSection Document Executable Flag Library Document Test SourceRepository
@@ -88,6 +88,6 @@ highlight link oasisSpecialFeatures Exception
 highlight link oasisOperator Operator
 highlight link oasisVariable Statement
 highlight link oasisString String
-highlight link oasisNumber Number
+highlight link oasisVersion Number
 
 let b:current_syntax = "oasis"
