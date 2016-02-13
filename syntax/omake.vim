@@ -129,6 +129,6 @@ if version >= 508 || !exists("did_make_syn_inits")
   delcommand HiLink
 endif
 
-let b:current_syntax = "make"
+let b:current_syntax = "omake"
 
 " vim: ts=8
