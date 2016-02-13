@@ -18,9 +18,11 @@ syn match makePreCondit	"^ *\(ifeq\>\|else\>\|endif\>\|ifneq\>\|ifdef\>\|ifndef\
 syn match makeInclude	"^ *[-s]\=include"
 syn match makeStatement	"^ *vpath"
 syn match makeExport    "^ *\(export\|unexport\)\>"
+syn match makeSection "^\s*section\s*$"
 syn match makeOverride	"^ *override"
 hi link makeOverride makeStatement
 hi link makeExport makeStatement
+hi link makeSection makeStatement
 
 " Koehler: catch unmatched define/endef keywords.  endef only matches it is by itself on a line
 syn region makeDefine start="^\s*define\s" end="^\s*endef\s*$" contains=makeStatement,makeIdent,makePreCondit,makeDefine
