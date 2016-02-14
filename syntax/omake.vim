@@ -64,12 +64,6 @@ syn match makeCmdNextLine	"\\\n."he=e-1 contained
 syn match makeStatement contained "(\(subst\|abspath\|addprefix\|addsuffix\|and\|basename\|call\|dir\|error\|eval\|filter-out\|filter\|findstring\|firstword\|flavor\|foreach\|if\|info\|join\|lastword\|notdir\|or\|origin\|patsubst\|realpath\|shell\|sort\|strip\|suffix\|value\|warning\|wildcard\|word\|wordlist\|words\)\>"ms=s+1
 
 " Comment
-if exists("make_microsoft")
-   syn match  makeComment "#.*" contains=@Spell,makeTodo
-elseif !exists("make_no_comments")
-   syn region  makeComment	start="#" end="^$" end="[^\\]$" keepend contains=@Spell,makeTodo
-   syn match   makeComment	"#$" contains=@Spell
-endif
 syn keyword makeTodo TODO FIXME XXX contained
 
 " match escaped quotes and any other escaped character
