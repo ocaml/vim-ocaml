@@ -70,7 +70,7 @@ syn keyword makeTodo TODO FIXME XXX contained
 " except for $, as a backslash in front of a $ does
 " not make it a standard character, but instead it will
 " still act as the beginning of a variable
-" The escaped char is not highlightet currently
+" The escaped char is not highlighted currently
 syn match makeEscapedChar	"\\[^$]"
 
 
