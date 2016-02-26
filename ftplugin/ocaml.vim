@@ -74,6 +74,30 @@ let b:match_words = b:mw
 
 let b:match_ignorecase=0
 
+function! s:OcpGrep(bang,args) abort
+  let grepprg = &l:grepprg
+  let grepformat = &l:grepformat
+  let shellpipe = &shellpipe
+  try
+    let &l:grepprg = "ocp-grep -c never"
+    setlocal grepformat=%f:%l:%m
+    if &shellpipe ==# '2>&1| tee' || &shellpipe ==# '|& tee'
+      let &shellpipe = "| tee"
+    endif
+    execute 'grep! '.a:args
+    if empty(a:bang) && !empty(getqflist())
+      return 'cfirst'
+    else
+      return ''
+    endif
+  finally
+    let &l:grepprg = grepprg
+    let &l:grepformat = grepformat
+    let &shellpipe = shellpipe
+  endtry
+endfunction
+command! -bar -bang -complete=file -nargs=+ Ocpgrep exe s:OcpGrep(<q-bang>, <q-args>)
+
 " switching between interfaces (.mli) and implementations (.ml)
 if !exists("g:did_ocaml_switch")
   let g:did_ocaml_switch = 1
