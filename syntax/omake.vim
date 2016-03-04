@@ -7,12 +7,15 @@ if exists("b:current_syntax")
   finish
 endif
 
+syn match omakeRuleOption ":\(optional\|exists\|effects\|scanner\|value\):"
+syn match omakeKeyword "^\s*\(case\|catch\|class\|declare\|default\|do\|else\|elseif\|export\|extends\|finally\|if\|import\|include\|match\|open\|raise\|return\|section\|switch\|try\|value\|when\|while\)\s*$"
+syn match omakeOperator "\[\]\|=\|+="
+
 " some special characters
 syn match makeSpecial	"^\s*[@+-]\+"
 syn match makeNextLine	"\\\n\s*"
 
 " some directives
-syn match makePreCondit	"^ *\(ifeq\>\|else\>\|endif\>\|ifneq\>\|ifdef\>\|ifndef\>\)"
 syn match makeInclude	"^ *[-s]\=include"
 syn match makeStatement	"^ *vpath"
 syn match makeExport    "^ *\(export\|unexport\)\>"
@@ -23,17 +26,16 @@ hi link makeExport makeStatement
 hi link makeSection makeStatement
 
 " Koehler: catch unmatched define/endef keywords.  endef only matches it is by itself on a line
-syn region makeDefine start="^\s*define\s" end="^\s*endef\s*$" contains=makeStatement,makeIdent,makePreCondit,makeDefine
+syn region makeDefine start="^\s*define\s" end="^\s*endef\s*$" contains=makeStatement,makeIdent,makeDefine
 
 " Microsoft Makefile specials
 syn case ignore
 syn match makeInclude	"^! *include"
-syn match makePreCondit "! *\(cmdswitches\|error\|message\|include\|if\|ifdef\|ifndef\|else\|elseif\|else if\|else\s*ifdef\|else\s*ifndef\|endif\|undef\)\>"
 syn case match
 
 " identifiers
-syn region makeIdent	start="\$(" skip="\\)\|\\\\" end=")" contains=makeStatement,makeIdent,makeSString,makeDString
-syn region makeIdent	start="\${" skip="\\}\|\\\\" end="}" contains=makeStatement,makeIdent,makeSString,makeDString
+syn region makeIdent	start="\$(" skip="\\)\|\\\\" end=")" contains=makeStatement,makeIdent,makeSString,makeDString,omakeDoubleQuoteString,omakeSingleQuoteString
+syn region makeIdent	start="\${" skip="\\}\|\\\\" end="}" contains=makeStatement,makeIdent,makeSString,makeDString,omakeDoubleQuoteString,omakeSingleQuoteString
 syn match makeIdent	"\$\$\w*"
 syn match makeIdent	"\$[^({]"
 syn match makeIdent	"^ *\a\w*\s*[:+?!*]="me=e-2
@@ -44,17 +46,17 @@ syn match makeIdent	"%"
 syn match makeConfig "@[A-Za-z0-9_]\+@"
 
 " make targets
-" syn match makeSpecTarget	"^\.\(SUFFIXES\|PHONY\|DEFAULT\|PRECIOUS\|IGNORE\|SILENT\|EXPORT_ALL_VARIABLES\|KEEP_STATE\|LIBPATTERNS\|NOTPARALLEL\|DELETE_ON_ERROR\|INTERMEDIATE\|POSIX\|SECONDARY\)\>"
+" syn match makeSpecTarget	"^\.\(STATIC\|PHONY\|DEFAULT\|MEMO\|INCLUDE\|ORDER\|SCANNER\|SUBDIRS\|BUILD_BEGIN\|BUILD_FAILURE\|BUILD_SUCCESS\|BUILDORDER\)\>"
 syn match makeImplicit		"^\.[A-Za-z0-9_./\t -]\+\s*:[^=]"me=e-2 nextgroup=makeSource
 syn match makeImplicit		"^\.[A-Za-z0-9_./\t -]\+\s*:$"me=e-1 nextgroup=makeSource
 
 syn region makeTarget	transparent matchgroup=makeTarget start="^[A-Za-z0-9_./$()%-][A-Za-z0-9_./\t $()%-]*:\{1,2}[^:=]"rs=e-1 end=";"re=e-1,me=e-1 end="[^\\]$" keepend contains=makeIdent,makeSpecTarget,makeNextLine skipnl nextGroup=makeCommands
 syn match makeTarget		"^[A-Za-z0-9_./$()%*@-][A-Za-z0-9_./\t $()%*@-]*::\=\s*$" contains=makeIdent,makeSpecTarget skipnl nextgroup=makeCommands
 
-syn region makeSpecTarget	transparent matchgroup=makeSpecTarget start="^\.\(SUFFIXES\|PHONY\|DEFAULT\|PRECIOUS\|IGNORE\|SILENT\|EXPORT_ALL_VARIABLES\|KEEP_STATE\|LIBPATTERNS\|NOTPARALLEL\|DELETE_ON_ERROR\|INTERMEDIATE\|POSIX\|SECONDARY\)\>\s*:\{1,2}[^:=]"rs=e-1 end="[^\\]$" keepend contains=makeIdent,makeSpecTarget,makeNextLine skipnl nextGroup=makeCommands
-syn match makeSpecTarget		"^\.\(SUFFIXES\|PHONY\|DEFAULT\|PRECIOUS\|IGNORE\|SILENT\|EXPORT_ALL_VARIABLES\|KEEP_STATE\|LIBPATTERNS\|NOTPARALLEL\|DELETE_ON_ERROR\|INTERMEDIATE\|POSIX\|SECONDARY\)\>\s*::\=\s*$" contains=makeIdent skipnl nextgroup=makeCommands
+syn region makeSpecTarget	transparent matchgroup=makeSpecTarget start="^\.\(STATIC\|PHONY\|DEFAULT\|MEMO\|INCLUDE\|ORDER\|SCANNER\|SUBDIRS\|BUILD_BEGIN\|BUILD_FAILURE\|BUILD_SUCCESS\|BUILDORDER\)\>\s*:\{1,2}[^:=]"rs=e-1 end="[^\\]$" keepend contains=makeIdent,makeSpecTarget,makeNextLine skipnl nextGroup=makeCommands
+syn match makeSpecTarget		"^\.\(STATIC\|PHONY\|DEFAULT\|MEMO\|INCLUDE\|ORDER\|SCANNER\|SUBDIRS\|BUILD_BEGIN\|BUILD_FAILURE\|BUILD_SUCCESS\|BUILDORDER\)\>\s*::\=\s*$" contains=makeIdent skipnl nextgroup=makeCommands
 
-syn region makeCommands start=";"hs=s+1 start="^\t" end="^[^\t#]"me=e-1,re=e-1 end="^$" contained contains=makeCmdNextLine,makeSpecial,makeComment,makeIdent,makePreCondit,makeDefine,makeDString,makeSString
+syn region makeCommands start=";"hs=s+1 start="^\t" end="^[^\t#]"me=e-1,re=e-1 end="^$" contained contains=makeCmdNextLine,makeSpecial,makeComment,makeIdent,makeDefine,makeDString,makeSString
 syn match makeCmdNextLine	"\\\n."he=e-1 contained
 
 
@@ -73,6 +75,13 @@ syn keyword makeTodo TODO FIXME XXX contained
 " The escaped char is not highlighted currently
 syn match makeEscapedChar	"\\[^$]"
 
+syn match omakeCallExpr "\$(\h[a-zA-Z0-9_-]*\s\+[^(]\+)" contains=@omakeExpr
+syn match omakeVar "\$(\h[a-zA-Z0-9_-]*)"
+syn cluster omakeExpr contains=omakeVar,omakeCallExpr
+
+syn region omakeSingleQuoteString start=+\$'+ skip=+[^']+ end=+'+
+syn region omakeDoubleQuoteString start=+\$"+ skip=+\\.+ end=+"+
+syn region omakeDoubleQuoteString start=+\$"""+ skip=+\\.+ end=+"""+
 
 syn region  makeDString start=+\(\\\)\@<!"+  skip=+\\.+  end=+"+  contains=makeIdent
 syn region  makeSString start=+\(\\\)\@<!'+  skip=+\\.+  end=+'+  contains=makeIdent
@@ -95,7 +104,6 @@ hi def link makeCommands		Number
 hi def link makeImplicit		Function
 hi def link makeTarget		Function
 hi def link makeInclude		Include
-hi def link makePreCondit		PreCondit
 hi def link makeStatement		Statement
 hi def link makeIdent		Identifier
 hi def link makeSpecial		Special
@@ -108,6 +116,13 @@ hi def link makeTodo		Todo
 hi def link makeDefine		Define
 hi def link makeConfig		PreCondit
 
-let b:current_syntax = "omake"
+hi def link omakeOperator Operator
+hi def link omakeDoubleQuoteString String
+hi def link omakeSingleQuoteString String
+hi def link omakeVar Identifier
+hi def link omakeCallExpr Statement
+hi def link omakeKeyword Keyword
+hi def link omakeRuleOption Type
 
+let b:current_syntax = "omake"
 " vim: ts=8
