@@ -7,8 +7,8 @@ if exists("b:current_syntax")
   finish
 endif
 
-syn match omakeRuleOption ":\(optional\|exists\|effects\|scanner\|value\):"
-syn match omakeKeyword "^\s*\(case\|catch\|class\|declare\|default\|do\|else\|elseif\|export\|extends\|finally\|if\|import\|include\|match\|open\|raise\|return\|section\|switch\|try\|value\|when\|while\)\s*$"
+syn match omakeRuleOption +:\(optional\|exists\|effects\|scanner\|value\):+
+syn match omakeKeyword "^\s*\(case\|catch\|class\|declare\|default\|do\|elseif\|else\|export\|extends\|finally\|if\|import\|include\|match\|open\|raise\|return\|section\|switch\|try\|value\|when\|while\)\s*"
 syn match omakeOperator "\[\]\|=\|+="
 
 " some special characters
