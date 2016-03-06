@@ -53,8 +53,8 @@ syn match makeImplicit		"^\.[A-Za-z0-9_./\t -]\+\s*:$"me=e-1 nextgroup=makeSourc
 syn region makeTarget	transparent matchgroup=makeTarget start="^[A-Za-z0-9_./$()%-][A-Za-z0-9_./\t $()%-]*:\{1,2}[^:=]"rs=e-1 end=";"re=e-1,me=e-1 end="[^\\]$" keepend contains=makeIdent,makeSpecTarget,makeNextLine skipnl nextGroup=makeCommands
 syn match makeTarget		"^[A-Za-z0-9_./$()%*@-][A-Za-z0-9_./\t $()%*@-]*::\=\s*$" contains=makeIdent,makeSpecTarget skipnl nextgroup=makeCommands
 
-syn region makeSpecTarget	transparent matchgroup=makeSpecTarget start="^\.\(STATIC\|PHONY\|DEFAULT\|MEMO\|INCLUDE\|ORDER\|SCANNER\|SUBDIRS\|BUILD_BEGIN\|BUILD_FAILURE\|BUILD_SUCCESS\|BUILDORDER\)\>\s*:\{1,2}[^:=]"rs=e-1 end="[^\\]$" keepend contains=makeIdent,makeSpecTarget,makeNextLine skipnl nextGroup=makeCommands
-syn match makeSpecTarget		"^\.\(STATIC\|PHONY\|DEFAULT\|MEMO\|INCLUDE\|ORDER\|SCANNER\|SUBDIRS\|BUILD_BEGIN\|BUILD_FAILURE\|BUILD_SUCCESS\|BUILDORDER\)\>\s*::\=\s*$" contains=makeIdent skipnl nextgroup=makeCommands
+syn region makeSpecTarget	transparent matchgroup=makeSpecTarget start="^\s*\.\(STATIC\|PHONY\|DEFAULT\|MEMO\|INCLUDE\|ORDER\|SCANNER\|SUBDIRS\|BUILD_BEGIN\|BUILD_FAILURE\|BUILD_SUCCESS\|BUILDORDER\)\>\s*:\{1,2}[^:=]"rs=e-1 end="[^\\]$" keepend contains=makeIdent,makeSpecTarget,makeNextLine skipnl nextGroup=makeCommands
+syn match makeSpecTarget		"^\s*\.\(STATIC\|PHONY\|DEFAULT\|MEMO\|INCLUDE\|ORDER\|SCANNER\|SUBDIRS\|BUILD_BEGIN\|BUILD_FAILURE\|BUILD_SUCCESS\|BUILDORDER\)\>\s*::\=\s*$" contains=makeIdent skipnl nextgroup=makeCommands
 
 syn region makeCommands start=";"hs=s+1 start="^\t" end="^[^\t#]"me=e-1,re=e-1 end="^$" contained contains=makeCmdNextLine,makeSpecial,makeComment,makeIdent,makeDefine,makeDString,makeSString
 syn match makeCmdNextLine	"\\\n."he=e-1 contained
