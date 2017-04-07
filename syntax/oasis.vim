@@ -9,7 +9,7 @@ syn keyword oasisPlugin META DevFiles StdFiles
 
 syn match oasisOperator "(\|)\|>=\|,\|&&"
 syn match oasisVariable "$\w\+"
-syn match oasisVersion "\d\+\(.\(\d\)\+\)\+"
+syn match oasisVersion "\<\d\+\(.\(\d\)\+\)\+\>"
 syn region oasisString start=/"/ end=/"/
 
 syntax keyword oasisSection Document Executable Flag Library Document Test SourceRepository
