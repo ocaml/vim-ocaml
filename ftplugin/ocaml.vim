@@ -66,7 +66,7 @@ endif
 " Let % jump between structure elements (due to Issac Trotts)
 let b:mw =         '\<let\>:\<and\>:\(\<in\>\|;;\)'
 let b:mw = b:mw . ',\<if\>:\<then\>:\<else\>'
-let b:mw = b:mw . ',\<\(for\|while\)\>:\<do\>:\<done\>,'
+let b:mw = b:mw . ',\<\(for\|while\)\>:\<do\>:\<done\>'
 let b:mw = b:mw . ',\<\(object\|sig\|struct\|begin\)\>:\<end\>'
 let b:mw = b:mw . ',\<\(match\|try\)\>:\<with\>'
 let b:match_words = b:mw
