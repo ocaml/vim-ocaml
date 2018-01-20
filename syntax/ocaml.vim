@@ -215,6 +215,12 @@ syn match    ocamlKeyChar      "\~"
 syn match    ocamlKeyChar      "?"
 syn match    ocamlKeyChar      "\*"
 syn match    ocamlKeyChar      "="
+syn match    ocamlKeyChar      ">>="
+syn match    ocamlKeyChar      ">>|"
+syn match    ocamlKeyChar      ">>^"
+syn match    ocamlKeyChar      ">>>"
+syn match    ocamlKeyChar      "@@"
+syn match    ocamlUnit         "()"
 
 if exists("ocaml_revised")
   syn match    ocamlErr        "<-"
