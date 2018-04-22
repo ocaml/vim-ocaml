@@ -109,6 +109,10 @@ endif
 " "if"
 syn region   ocamlNone matchgroup=ocamlKeyword start="\<if\>" matchgroup=ocamlKeyword end="\<then\>" contains=ALLBUT,@ocamlContained,ocamlThenErr
 
+"" PPX nodes
+
+syn match ocamlPpxIdentifier /\(\[@\{1,3\}\)\@<=\w\+\(\.\w\+\)*/
+syn region ocamlPpx matchgroup=ocamlPpxEncl start="\[@\{1,3\}" contains=TOP end="\]"
 
 "" Modules
 
@@ -328,6 +332,8 @@ if version >= 508 || !exists("did_ocaml_syntax_inits")
   HiLink ocamlTodo	   Todo
 
   HiLink ocamlEncl	   Keyword
+
+  HiLink ocamlPpxEncl       ocamlEncl
 
   delcommand HiLink
 endif
