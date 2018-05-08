@@ -1,3 +1,7 @@
+if exists("b:current_syntax")
+    finish
+endif
+
 set syntax=lisp
 syn case match
 
@@ -28,3 +32,5 @@ syn match jbuildVar '\${[@<^]}' containedin=lispSymbol
 syn match jbuildVar '\${\k\+\(:\k\+\)\?}' containedin=lispSymbol
 
 hi def link jbuildVar Identifier
+
+let b:current_syntax = "jbuild"
