@@ -5,9 +5,13 @@
 "               Karl-Heinz Sylla  <Karl-Heinz.Sylla@gmd.de>
 "               Issac Trotts      <ijtrotts@ucdavis.edu>
 " URL:          http://www.ocaml.info/vim/syntax/ocaml.vim
-" Last Change:  2015 Jan 21 - Bug fix for comments following included modules (MM)
-"               2014 Oct 09 - added generative functors and quoted strings (MM)
-"               2012 May 12 - Added Dominique Pellé's spell checking patch (MM)
+" Last Change:
+"               2018 Apr 22 - Improved support for PPX (Andrey Popp)
+"               2018 Mar 16 - Remove raise, lnot and not from keywords (Étienne Millon, "copy")
+"               2017 Apr 11 - Improved matching of negative numbers (MM)
+"               2016 Mar 11 - Improved support for quoted strings (Glen Mével)
+"               2015 Aug 13 - Allow apostrophes in identifiers (Jonathan Chan, Einar Lielmanis)
+"               2015 Jun 17 - Added new "nonrec" keyword (MM)
 
 " A minor patch was applied to the official version so that object/end
 " can be distinguished from begin/end, which is used for indentation,
@@ -158,6 +162,9 @@ syn region   ocamlStruct matchgroup=ocamlModule start="\<\(module\s\+\)\=struct\
 syn region   ocamlKeyword start="\<module\>\s*\<type\>\(\s*\<of\>\)\=" matchgroup=ocamlModule end="\<\w\(\w\|'\)*\>" contains=ocamlComment skipwhite skipempty nextgroup=ocamlMTDef
 syn match    ocamlMTDef "=\s*\w\(\w\|'\)*\>"hs=s+1,me=s+1 skipwhite skipempty nextgroup=ocamlFullMod
 
+" Quoted strings
+syn region ocamlString matchgroup=ocamlQuotedStringDelim start="{\z\([a-z_]*\)|" end="|\z1}" contains=@Spell
+
 syn keyword  ocamlKeyword  and as assert class
 syn keyword  ocamlKeyword  constraint else
 syn keyword  ocamlKeyword  exception external fun
@@ -201,7 +208,6 @@ syn match    ocamlCharacter    "'\\x\x\x'"
 syn match    ocamlCharErr      "'\\\d\d'\|'\\\d'"
 syn match    ocamlCharErr      "'\\[^\'ntbr]'"
 syn region   ocamlString       start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=@Spell
-syn match    ocamlString       "{\(\w*\)|\(.\|\n\)\{-}|\1}" contains=@Spell
 
 syn match    ocamlFunDef       "->"
 syn match    ocamlRefAssign    ":="
@@ -226,11 +232,11 @@ else
   syn match    ocamlOperator   "<-"
 endif
 
-syn match    ocamlNumber        "\<-\=\d\(_\|\d\)*[l|L|n]\?\>"
-syn match    ocamlNumber        "\<-\=0[x|X]\(\x\|_\)\+[l|L|n]\?\>"
-syn match    ocamlNumber        "\<-\=0[o|O]\(\o\|_\)\+[l|L|n]\?\>"
-syn match    ocamlNumber        "\<-\=0[b|B]\([01]\|_\)\+[l|L|n]\?\>"
-syn match    ocamlFloat         "\<-\=\d\(_\|\d\)*\.\?\(_\|\d\)*\([eE][-+]\=\d\(_\|\d\)*\)\=\>"
+syn match    ocamlNumber        "-\=\<\d\(_\|\d\)*[l|L|n]\?\>"
+syn match    ocamlNumber        "-\=\<0[x|X]\(\x\|_\)\+[l|L|n]\?\>"
+syn match    ocamlNumber        "-\=\<0[o|O]\(\o\|_\)\+[l|L|n]\?\>"
+syn match    ocamlNumber        "-\=\<0[b|B]\([01]\|_\)\+[l|L|n]\?\>"
+syn match    ocamlFloat         "-\=\<\d\(_\|\d\)*\.\?\(_\|\d\)*\([eE][-+]\=\d\(_\|\d\)*\)\=\>"
 
 " Labels
 syn match    ocamlLabel        "\~\(\l\|_\)\(\w\|'\)*"lc=1
@@ -324,6 +330,7 @@ if version >= 508 || !exists("did_ocaml_syntax_inits")
   HiLink ocamlNumber	   Number
   HiLink ocamlFloat	   Float
   HiLink ocamlString	   String
+  HiLink ocamlQuotedStringDelim Identifier
 
   HiLink ocamlLabel	   Identifier
 
