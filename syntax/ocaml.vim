@@ -6,6 +6,7 @@
 "               Issac Trotts      <ijtrotts@ucdavis.edu>
 " URL:          http://www.ocaml.info/vim/syntax/ocaml.vim
 " Last Change:
+"               2018 Nov 08 - Improved highlighting of operators (Maëlan)
 "               2018 Apr 22 - Improved support for PPX (Andrey Popp)
 "               2018 Mar 16 - Remove raise, lnot and not from keywords (Étienne Millon, "copy")
 "               2017 Apr 11 - Improved matching of negative numbers (MM)
@@ -170,7 +171,7 @@ syn keyword  ocamlKeyword  constraint else
 syn keyword  ocamlKeyword  exception external fun
 
 syn keyword  ocamlKeyword  in inherit initializer
-syn keyword  ocamlKeyword  land lazy let match
+syn keyword  ocamlKeyword  lazy let match
 syn keyword  ocamlKeyword  method mutable new nonrec of
 syn keyword  ocamlKeyword  parser private rec
 syn keyword  ocamlKeyword  try type
@@ -182,14 +183,11 @@ if exists("ocaml_revised")
 else
   syn keyword  ocamlKeyword  function
   syn keyword  ocamlBoolean  true false
-  syn match    ocamlKeyChar  "!"
 endif
 
 syn keyword  ocamlType     array bool char exn float format format4
 syn keyword  ocamlType     int int32 int64 lazy_t list nativeint option
 syn keyword  ocamlType     string unit
-
-syn keyword  ocamlOperator asr lor lsl lsr lxor mod
 
 syn match    ocamlConstructor  "(\s*)"
 syn match    ocamlConstructor  "\[\s*\]"
@@ -209,27 +207,49 @@ syn match    ocamlCharErr      "'\\\d\d'\|'\\\d'"
 syn match    ocamlCharErr      "'\\[^\'ntbr]'"
 syn region   ocamlString       start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=@Spell
 
-syn match    ocamlFunDef       "->"
-syn match    ocamlRefAssign    ":="
 syn match    ocamlTopStop      ";;"
-syn match    ocamlOperator     "\^"
-syn match    ocamlOperator     "::"
 
-syn match    ocamlOperator     "&&"
-syn match    ocamlOperator     "<"
-syn match    ocamlOperator     ">"
 syn match    ocamlAnyVar       "\<_\>"
 syn match    ocamlKeyChar      "|[^\]]"me=e-1
 syn match    ocamlKeyChar      ";"
 syn match    ocamlKeyChar      "\~"
 syn match    ocamlKeyChar      "?"
-syn match    ocamlKeyChar      "\*"
-syn match    ocamlKeyChar      "="
 
+"" Operators
+
+" The grammar of operators is found there:
+"     https://caml.inria.fr/pub/docs/manual-ocaml/names.html#operator-name
+"     https://caml.inria.fr/pub/docs/manual-ocaml/extn.html#s:ext-ops
+"     https://caml.inria.fr/pub/docs/manual-ocaml/extn.html#s:index-operators
+" =, *, < and > are both operator names and keywords, we let the user choose how
+" to display them (has to be declared before regular infix operators):
+syn match    ocamlEqual        "="
+syn match    ocamlStar         "*"
+syn match    ocamlAngle        "<"
+syn match    ocamlAngle        ">"
+" Custom indexing operators:
+syn match    ocamlIndexingOp   "\.[~?!:|&$%=>@^/*+-][~?!.:|&$%<=>@^*/+-]*\(()\|\[]\|{}\)\(<-\)\?"
+" Extension operators (has to be declared before regular infix operators):
+syn match    ocamlExtensionOp          "#[#~?!.:|&$%<=>@^*/+-]\+"
+" Infix and prefix operators:
+syn match    ocamlPrefixOp              "![~?!.:|&$%<=>@^*/+-]*"
+syn match    ocamlPrefixOp           "[~?][~?!.:|&$%<=>@^*/+-]\+"
+syn match    ocamlInfixOp      "[&$%@^/+-][~?!.:|&$%<=>@^*/+-]*"
+syn match    ocamlInfixOp         "[|<=>*][~?!.:|&$%<=>@^*/+-]\+"
+syn match    ocamlInfixOp               "#[~?!.:|&$%<=>@^*/+-]\+#\@!"
+syn match    ocamlInfixOp              "!=[~?!.:|&$%<=>@^*/+-]\@!"
+syn keyword  ocamlInfixOp      asr land lor lsl lsr lxor mod or
+" := is technically an infix operator, but we may want to show it as a keyword
+" (somewhat analogously to = for let‐bindings and <- for assignations):
+syn match    ocamlRefAssign    ":="
+" :: is technically not an operator, but we may want to show it as such:
+syn match    ocamlCons         "::"
+" -> and <- are keywords, not operators (but can appear in longer operators):
+syn match    ocamlArrow        "->[~?!.:|&$%<=>@^*/+-]\@!"
 if exists("ocaml_revised")
-  syn match    ocamlErr        "<-"
+  syn match    ocamlErr        "<-[~?!.:|&$%<=>@^*/+-]\@!"
 else
-  syn match    ocamlOperator   "<-"
+  syn match    ocamlKeyChar    "<-[~?!.:|&$%<=>@^*/+-]\@!"
 endif
 
 syn match    ocamlNumber        "-\=\<\d\(_\|\d\)*[l|L|n]\?\>"
@@ -318,12 +338,23 @@ if version >= 508 || !exists("did_ocaml_syntax_inits")
   HiLink ocamlMPRestr2	   Keyword
   HiLink ocamlKeyword	   Keyword
   HiLink ocamlMethod	   Include
-  HiLink ocamlFunDef	   Keyword
-  HiLink ocamlRefAssign    Keyword
+  HiLink ocamlArrow	   Keyword
   HiLink ocamlKeyChar	   Keyword
   HiLink ocamlAnyVar	   Keyword
   HiLink ocamlTopStop	   Keyword
-  HiLink ocamlOperator	   Keyword
+
+  HiLink ocamlRefAssign    ocamlKeyChar
+  HiLink ocamlEqual        ocamlKeyChar
+  HiLink ocamlStar         ocamlInfixOp
+  HiLink ocamlAngle        ocamlInfixOp
+  HiLink ocamlCons         ocamlInfixOp
+
+  HiLink ocamlPrefixOp     ocamlOperator
+  HiLink ocamlInfixOp      ocamlOperator
+  HiLink ocamlExtensionOp  ocamlOperator
+  HiLink ocamlIndexingOp   ocamlOperator
+
+  HiLink ocamlOperator     Operator
 
   HiLink ocamlBoolean	   Boolean
   HiLink ocamlCharacter    Character
