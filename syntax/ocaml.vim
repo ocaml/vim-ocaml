@@ -238,7 +238,7 @@ syn match    ocamlInfixOp      "[&$%@^/+-][~?!.:|&$%<=>@^*/+-]*"
 syn match    ocamlInfixOp         "[|<=>*][~?!.:|&$%<=>@^*/+-]\+"
 syn match    ocamlInfixOp               "#[~?!.:|&$%<=>@^*/+-]\+#\@!"
 syn match    ocamlInfixOp              "!=[~?!.:|&$%<=>@^*/+-]\@!"
-syn keyword  ocamlInfixOp      asr land lor lsl lsr lxor mod or
+syn keyword  ocamlInfixOpKeyword      asr land lor lsl lsr lxor mod or
 " := is technically an infix operator, but we may want to show it as a keyword
 " (somewhat analogously to = for let‐bindings and <- for assignations):
 syn match    ocamlRefAssign    ":="
@@ -351,10 +351,11 @@ if version >= 508 || !exists("did_ocaml_syntax_inits")
   HiLink ocamlAngle        ocamlInfixOp
   HiLink ocamlCons         ocamlInfixOp
 
-  HiLink ocamlPrefixOp     ocamlOperator
-  HiLink ocamlInfixOp      ocamlOperator
-  HiLink ocamlExtensionOp  ocamlOperator
-  HiLink ocamlIndexingOp   ocamlOperator
+  HiLink ocamlPrefixOp       ocamlOperator
+  HiLink ocamlInfixOp        ocamlOperator
+  HiLink ocamlInfixOpKeyword ocamlOperator
+  HiLink ocamlExtensionOp    ocamlOperator
+  HiLink ocamlIndexingOp     ocamlOperator
 
   HiLink ocamlOperator     Operator
 
