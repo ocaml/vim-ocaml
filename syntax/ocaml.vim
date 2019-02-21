@@ -353,11 +353,15 @@ if version >= 508 || !exists("did_ocaml_syntax_inits")
 
   HiLink ocamlPrefixOp       ocamlOperator
   HiLink ocamlInfixOp        ocamlOperator
-  HiLink ocamlInfixOpKeyword ocamlOperator
   HiLink ocamlExtensionOp    ocamlOperator
   HiLink ocamlIndexingOp     ocamlOperator
 
-  HiLink ocamlOperator     Operator
+  if exists("ocaml_highlight_operators")
+    HiLink ocamlInfixOpKeyword ocamlOperator
+    HiLink ocamlOperator       Operator
+  else
+    HiLink ocamlInfixOpKeyword Keyword
+  endif
 
   HiLink ocamlBoolean	   Boolean
   HiLink ocamlCharacter    Character
