@@ -18,11 +18,8 @@
 " can be distinguished from begin/end, which is used for indentation,
 " and folding. (David Baelde)
 
-" For version 5.x: Clear all syntax items
-" For version 6.x: Quit when a syntax file was already loaded
-if version < 600
-  syntax clear
-elseif exists("b:current_syntax") && b:current_syntax == "ocaml"
+" Quit when a syntax file was already loaded
+if exists("b:current_syntax") && b:current_syntax == "ocaml"
   finish
 endif
 
