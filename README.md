@@ -1,6 +1,6 @@
 # vim-ocaml
 
-Vim runtime files for OCaml. These are sycned periodically with the builtin
+Vim runtime files for OCaml. These are synced periodically with the builtin
 support that comes with Vim. Users are recommended to use this repository
 directly however as it's more up to date.
 
@@ -23,5 +23,5 @@ NeoBundleLazy 'rgrinberg/vim-ocaml', {'autoload' : {'filetypes' :
 ## History
 
 This repo started out by @rgrinberg extracting Markus Mottl's improvements to
-the builtin OCaml support in vim. Later, support for more OCaml related tools
+the builtin OCaml support in Vim. Later, support for more OCaml related tools
 was added: dune, opam etc. Nowadays, it's maintained by a team.
