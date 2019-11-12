@@ -5,8 +5,16 @@ CONFIGURATION                                    *ocaml-configuration*
                                                  *g:ocaml_highlight_operators*
 
 By default operators are not linked to the Operator group and thus not
-highlighted. You can turn on highlighting of operators by defining:
+highlighted. You can turn on highlighting of operators by defining: >
 
   let g:ocaml_highlight_operators = 1
+<
+                                                 *g:ocaml_use_ocp_indent*
 
- vim:tw=78:et:ft=help:norl:
+By default indent with a rule set maintained by the OCaml team, you can use
+`ocp-indent` which maintained by OCamlPro team as another choice: >
+
+  let g:ocaml_use_ocp_indent = 1
+<
+------------------------------------------------------------------------------
+vim:tw=78:et:ft=help:norl:
