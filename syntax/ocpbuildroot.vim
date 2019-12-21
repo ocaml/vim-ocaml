@@ -29,6 +29,7 @@ syn keyword ocprKeywords install_docdir
 syn keyword ocprKeywords install_datadir
 syn keyword ocprKeywords install_libdir
 syn keyword ocprKeywords install_bindir
+syn keyword ocprKeywords install_metadir
 
 syn keyword ocprNumber None
 syn keyword ocprNumber true
