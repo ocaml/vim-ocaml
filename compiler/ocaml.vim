@@ -31,7 +31,7 @@ let s:cpo_save = &cpo
 set cpo&vim
 
 CompilerSet errorformat =
-      \%EFile\ \"%f\"\\,\ lines\ %l-%*\\d\\,\ characters\ %c-%*\\d:,
+      \%EFile\ \"%f\"\\,\ lines\ %*\\d-%l\\,\ characters\ %c-%*\\d:,
       \%EFile\ \"%f\"\\,\ line\ %l\\,\ characters\ %c-%*\\d:,
       \%EFile\ \"%f\"\\,\ line\ %l\\,\ characters\ %c-%*\\d\ %.%#,
       \%EFile\ \"%f\"\\,\ line\ %l\\,\ character\ %c:%m,
