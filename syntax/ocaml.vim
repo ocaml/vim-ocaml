@@ -81,10 +81,10 @@ syn cluster  ocamlContained contains=ocamlTodo,ocamlPreDef,ocamlModParam,ocamlMo
 
 
 " Enclosing delimiters
-syn region   ocamlEncl transparent matchgroup=ocamlKeyword start="(" matchgroup=ocamlKeyword end=")" contains=ALLBUT,@ocamlContained,ocamlParenErr
-syn region   ocamlEncl transparent matchgroup=ocamlKeyword start="{" matchgroup=ocamlKeyword end="}"  contains=ALLBUT,@ocamlContained,ocamlBraceErr
-syn region   ocamlEncl transparent matchgroup=ocamlKeyword start="\[" matchgroup=ocamlKeyword end="\]" contains=ALLBUT,@ocamlContained,ocamlBrackErr
-syn region   ocamlEncl transparent matchgroup=ocamlKeyword start="\[|" matchgroup=ocamlKeyword end="|\]" contains=ALLBUT,@ocamlContained,ocamlArrErr
+syn region   ocamlEncl transparent matchgroup=ocamlDelimiter start="(" matchgroup=ocamlDelimiter end=")" contains=ALLBUT,@ocamlContained,ocamlParenErr
+syn region   ocamlEncl transparent matchgroup=ocamlDelimiter start="{" matchgroup=ocamlDelimiter end="}"  contains=ALLBUT,@ocamlContained,ocamlBraceErr
+syn region   ocamlEncl transparent matchgroup=ocamlDelimiter start="\[" matchgroup=ocamlDelimiter end="\]" contains=ALLBUT,@ocamlContained,ocamlBrackErr
+syn region   ocamlEncl transparent matchgroup=ocamlDelimiter start="\[|" matchgroup=ocamlDelimiter end="|\]" contains=ALLBUT,@ocamlContained,ocamlArrErr
 
 
 " Comments
@@ -332,6 +332,7 @@ hi def link ocamlWith	   Include
 hi def link ocamlMTDef	   Include
 hi def link ocamlSigEncl	   ocamlModule
 hi def link ocamlStructEncl	   ocamlModule
+hi def link ocamlDelimiter    Delimiter
 
 hi def link ocamlScript	   Include
 
