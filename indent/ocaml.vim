@@ -30,7 +30,7 @@ setlocal nosmartindent
 " Comment formatting
 if !exists("no_ocaml_comments")
  if (has("comments"))
-   setlocal comments=sr:(*,mb:*,ex:*)
+   setlocal comments=sr:(*,ex:*)
    setlocal fo=cqort
  endif
 endif
