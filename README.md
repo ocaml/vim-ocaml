@@ -17,7 +17,7 @@ NeoBundleInstall ocaml/vim-ocaml'
 
 " or use NeoBundleLazy
 NeoBundleLazy 'rgrinberg/vim-ocaml', {'autoload' : {'filetypes' :
-    \ ['ocaml', 'dune', 'opam', 'oasis', 'omake', 'ocamlbuild_tags', 'sexplib']}}
+    \ ['ocaml', 'ocamlinterface', 'dune', 'opam', 'oasis', 'omake', 'ocamlbuild_tags', 'sexplib']}}
 ```
 
 ## History
