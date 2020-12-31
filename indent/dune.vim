@@ -1,5 +1,8 @@
 " Vim indent file
 " Language: dune
+" Maintainers:  Markus Mottl         <markus.mottl@gmail.com>
+" URL:          https://github.com/ocaml/vim-ocaml
+" Last Change:  2020 Dec 31
 
 if exists("b:did_indent")
  finish
