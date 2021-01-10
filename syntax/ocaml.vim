@@ -23,7 +23,7 @@ if exists("b:current_syntax") && b:current_syntax == "ocaml"
   finish
 endif
 
-let s:ocaml_cpo_save = &cpo
+let s:keepcpo = &cpo
 set cpo&vim
 
 " ' can be used in OCaml identifiers
@@ -387,7 +387,7 @@ hi def link ocamlPpxEncl       ocamlEncl
 
 let b:current_syntax = "ocaml"
 
-let &cpo = s:ocaml_cpo_save
-unlet s:ocaml_cpo_save
+let &cpo = s:keepcpo
+unlet s:keepcpo
 
 " vim: ts=8
