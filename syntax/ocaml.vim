@@ -23,6 +23,9 @@ if exists("b:current_syntax") && b:current_syntax == "ocaml"
   finish
 endif
 
+let s:ocaml_cpo_save = &cpo
+set cpo&vim
+
 " ' can be used in OCaml identifiers
 setlocal iskeyword+='
 
@@ -383,5 +386,8 @@ hi def link ocamlEncl	   Keyword
 hi def link ocamlPpxEncl       ocamlEncl
 
 let b:current_syntax = "ocaml"
+
+let &cpo = s:ocaml_cpo_save
+unlet s:ocaml_cpo_save
 
 " vim: ts=8
