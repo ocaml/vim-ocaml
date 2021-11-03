@@ -3,6 +3,7 @@
 " Maintainer:  Markus Mottl <markus.mottl@gmail.com>
 " URL:         https://github.com/ocaml/vim-ocaml
 " Last Change:
+"              2021 Nov 03 - Improved error format (Jules Aguillon)
 "              2020 Mar 28 - Improved error format (Thomas Leonard)
 "              2017 Nov 26 - Improved error format (Markus Mottl)
 "              2013 Aug 27 - Added a new OCaml error format (Markus Mottl)
@@ -35,6 +36,7 @@ CompilerSet errorformat =
       \%EFile\ \"%f\"\\,\ line\ %l\\,\ characters\ %c-%*\\d:,
       \%EFile\ \"%f\"\\,\ line\ %l\\,\ characters\ %c-%*\\d\ %.%#,
       \%EFile\ \"%f\"\\,\ line\ %l\\,\ character\ %c:%m,
+      \%EFile\ \"%f\"\\,\ line\ %l:,
       \%+EReference\ to\ unbound\ regexp\ name\ %m,
       \%Eocamlyacc:\ e\ -\ line\ %l\ of\ \"%f\"\\,\ %m,
       \%Wocamlyacc:\ w\ -\ %m,
