@@ -41,6 +41,8 @@ CompilerSet errorformat =
       \%Eocamlyacc:\ e\ -\ line\ %l\ of\ \"%f\"\\,\ %m,
       \%Wocamlyacc:\ w\ -\ %m,
       \%-Zmake%.%#,
+      \%C%*\\d\ \|%.%#,
+      \%C%p^%#,
       \%C%m,
       \%D%*\\a[%*\\d]:\ Entering\ directory\ `%f',
       \%X%*\\a[%*\\d]:\ Leaving\ directory\ `%f',
