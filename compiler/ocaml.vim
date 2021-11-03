@@ -54,7 +54,9 @@ CompilerSet errorformat =
       \%X%*\\a:\ Leaving\ directory\ '%f',
       \%DEntering\ directory\ '%f',
       \%XLeaving\ directory\ '%f',
-      \%DMaking\ %*\\a\ in\ %f
+      \%DMaking\ %*\\a\ in\ %f,
+      \%+G%m
+
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
