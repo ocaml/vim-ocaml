@@ -1,5 +1,5 @@
 " Vim syntax file
-" Language:    OPAM - OCaml package manager
+" Language:    opam - OCaml package manager
 " Maintainer:  Markus Mottl        <markus.mottl@gmail.com>
 " URL:         https://github.com/ocaml/vim-ocaml
 " Last Change:
