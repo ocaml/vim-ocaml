@@ -1,4 +1,4 @@
-*opam.txt*  Switch OCaml versions from inside Vim using OPAM
+*opam.txt*  Switch OCaml versions from inside Vim using opam
 
 Author:  Rudi Grinberg <http://rgrinberg.com>
 License: Same terms as Vim itself (see |license|)
