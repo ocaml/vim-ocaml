@@ -11,7 +11,7 @@ let g:loaded_opam = 1
 " Utility {{{1
 
 function! opam#eval_env()
-  let opam_eval = system("opam config env")
+  let opam_eval = system("opam env --read-only")
   let cmds = split(opam_eval, "\n")
   for cmd in cmds
     let var = split(split(cmd, ";")[0], "=")
@@ -69,9 +69,9 @@ function! s:Opam(bang,...) abort
 endfunction
 
 function! s:Complete(A,L,P)
-  let installed = split((system("opam switch -s -i 2> /dev/null")), "\n")
-  call map(installed, 'opam#chomp(v:val)')
-  return join(installed, "\n")
+  let switches = split((system("opam switch --short 2> /dev/null")), "\n")
+  call map(switches, 'opam#chomp(v:val)')
+  return join(switches, "\n")
 endfunction
 
 command! -bar -nargs=* -complete=custom,s:Complete Opam :execute s:Opam(<bang>0,<f-args>)
