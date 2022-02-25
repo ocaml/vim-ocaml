@@ -52,8 +52,9 @@ syn keyword opamTodo FIXME NOTE NOTES TODO XXX contained
 syn match opamComment "#.*$" contains=opamTodo,@Spell
 syn match opamOperator ">\|<\|=\|<=\|>="
 
-syn region opamInterpolate start=/%{/ end=/}%/ contained
-syn region opamString start=/"/ end=/"/ contains=opamInterpolate
+syn match opamUnclosedInterpolate "%{[^ "]*" contained
+syn match opamInterpolate         "%{[^ "]\+}%" contained
+syn region opamString start=/"/ end=/"/ contains=opamInterpolate,OpamUnclosedInterpolate
 syn region opamSeq start=/\[/ end=/\]/ contains=ALLBUT,opamKeyword1
 syn region opamExp start=/{/ end=/}/ contains=ALLBUT,opamKeyword1
 
@@ -65,6 +66,7 @@ hi link opamSeq Statement
 hi link opamOperator Operator
 hi link opamComment Comment
 hi link opamInterpolate Identifier
+hi link opamUnclosedInterpolate Error
 
 let b:current_syntax = "opam"
 
