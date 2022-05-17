@@ -206,13 +206,14 @@ syn match    ocamlCharErr      "'\\\d\d'\|'\\\d'"
 syn match    ocamlCharErr      "'\\[^\'ntbr]'"
 syn region   ocamlString       start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=@Spell
 
-syn match    ocamlTopStop      ";;"
-
 syn match    ocamlAnyVar       "\<_\>"
 syn match    ocamlKeyChar      "|]\@!"
 syn match    ocamlKeyChar      ";"
 syn match    ocamlKeyChar      "\~"
 syn match    ocamlKeyChar      "?"
+
+" NOTE: for correct precedence, the rule for ";;" must come after that for ";"
+syn match    ocamlTopStop      ";;"
 
 "" Operators
 
