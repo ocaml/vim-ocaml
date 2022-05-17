@@ -47,15 +47,11 @@ syn match    ocamlScript "^#\<\(quit\|labels\|warnings\|warn_error\|directory\|r
 " lowercase identifier - the standard way to match
 syn match    ocamlLCIdentifier /\<\(\l\|_\)\(\w\|'\)*\>/
 
-syn match    ocamlKeyChar    "|"
-
 " Errors
 syn match    ocamlBraceErr   "}"
 syn match    ocamlBrackErr   "\]"
 syn match    ocamlParenErr   ")"
 syn match    ocamlArrErr     "|]"
-
-syn match    ocamlCommentErr "\*)"
 
 syn match    ocamlCountErr   "\<downto\>"
 syn match    ocamlCountErr   "\<to\>"
@@ -76,9 +72,8 @@ else
 endif
 
 " Some convenient clusters
-syn cluster  ocamlAllErrs contains=ocamlBraceErr,ocamlBrackErr,ocamlParenErr,ocamlCommentErr,ocamlCountErr,ocamlDoErr,ocamlDoneErr,ocamlEndErr,ocamlThenErr
-
-syn cluster  ocamlAENoParen contains=ocamlBraceErr,ocamlBrackErr,ocamlCommentErr,ocamlCountErr,ocamlDoErr,ocamlDoneErr,ocamlEndErr,ocamlThenErr
+syn cluster  ocamlAllErrs contains=@ocamlAENoParen,ocamlParenErr
+syn cluster  ocamlAENoParen contains=ocamlBraceErr,ocamlBrackErr,ocamlCountErr,ocamlDoErr,ocamlDoneErr,ocamlEndErr,ocamlThenErr
 
 syn cluster  ocamlContained contains=ocamlTodo,ocamlPreDef,ocamlModParam,ocamlModParam1,ocamlMPRestr,ocamlMPRestr1,ocamlMPRestr2,ocamlMPRestr3,ocamlModRHS,ocamlFuncWith,ocamlFuncStruct,ocamlModTypeRestr,ocamlModTRWith,ocamlWith,ocamlWithRest,ocamlModType,ocamlFullMod,ocamlVal
 
@@ -214,7 +209,7 @@ syn region   ocamlString       start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=@Spel
 syn match    ocamlTopStop      ";;"
 
 syn match    ocamlAnyVar       "\<_\>"
-syn match    ocamlKeyChar      "|[^\]]"me=e-1
+syn match    ocamlKeyChar      "|]\@!"
 syn match    ocamlKeyChar      ";"
 syn match    ocamlKeyChar      "\~"
 syn match    ocamlKeyChar      "?"
@@ -274,8 +269,7 @@ syn match    ocamlNumber        "-\=\<0[b|B]\([01]\|_\)\+[l|L|n]\?\>"
 syn match    ocamlFloat         "-\=\<\d\(_\|\d\)*\.\?\(_\|\d\)*\([eE][-+]\=\d\(_\|\d\)*\)\=\>"
 
 " Labels
-syn match    ocamlLabel        "\~\(\l\|_\)\(\w\|'\)*"lc=1
-syn match    ocamlLabel        "?\(\l\|_\)\(\w\|'\)*"lc=1
+syn match    ocamlLabel        "[~?]\(\l\|_\)\(\w\|'\)*"lc=1
 syn region   ocamlLabel transparent matchgroup=ocamlLabel start="[~?](\(\l\|_\)\(\w\|'\)*"lc=2 end=")"me=e-1 contains=ALLBUT,@ocamlContained,ocamlParenErr
 
 
@@ -306,8 +300,6 @@ hi def link ocamlBraceErr	   Error
 hi def link ocamlBrackErr	   Error
 hi def link ocamlParenErr	   Error
 hi def link ocamlArrErr	   Error
-
-hi def link ocamlCommentErr   Error
 
 hi def link ocamlCountErr	   Error
 hi def link ocamlDoErr	   Error
