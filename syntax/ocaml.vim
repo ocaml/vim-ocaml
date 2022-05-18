@@ -222,12 +222,9 @@ syn match    ocamlTopStop      ";;"
 "     https://caml.inria.fr/pub/docs/manual-ocaml/names.html#operator-name
 "     https://caml.inria.fr/pub/docs/manual-ocaml/extn.html#s:ext-ops
 "     https://caml.inria.fr/pub/docs/manual-ocaml/extn.html#s:index-operators
-" =, *, < and > are both operator names and keywords, we let the user choose how
-" to display them (has to be declared before regular infix operators):
+" = is both an operator name and a keyword, we let the user choose how
+" to display it (has to be declared before regular infix operators):
 syn match    ocamlEqual        "="
-syn match    ocamlStar         "*"
-syn match    ocamlAngle        "<"
-syn match    ocamlAngle        ">"
 " Custom indexing operators:
 syn region   ocamlIndexing matchgroup=ocamlIndexingOp
   \ start="\.[~?!:|&$%=>@^/*+-][~?!.:|&$%<=>@^*/+-]*\_s*("
@@ -246,8 +243,8 @@ syn match    ocamlExtensionOp          "#[#~?!.:|&$%<=>@^*/+-]\+"
 " Infix and prefix operators:
 syn match    ocamlPrefixOp              "![~?!.:|&$%<=>@^*/+-]*"
 syn match    ocamlPrefixOp           "[~?][~?!.:|&$%<=>@^*/+-]\+"
-syn match    ocamlInfixOp      "[&$%@^/+-][~?!.:|&$%<=>@^*/+-]*"
-syn match    ocamlInfixOp         "[|<=>*][~?!.:|&$%<=>@^*/+-]\+"
+syn match    ocamlInfixOp   "[&$%<>@^*/+-][~?!.:|&$%<=>@^*/+-]*"
+syn match    ocamlInfixOp            "[|=][~?!.:|&$%<=>@^*/+-]\+"
 syn match    ocamlInfixOp               "#[~?!.:|&$%<=>@^*/+-]\+#\@!"
 syn match    ocamlInfixOp              "!=[~?!.:|&$%<=>@^*/+-]\@!"
 syn keyword  ocamlInfixOpKeyword      asr land lor lsl lsr lxor mod or
@@ -599,8 +596,6 @@ hi def link ocamlTopStop	   Keyword
 
 hi def link ocamlRefAssign    ocamlKeyChar
 hi def link ocamlEqual        ocamlKeyChar
-hi def link ocamlStar         ocamlInfixOp
-hi def link ocamlAngle        ocamlInfixOp
 hi def link ocamlCons         ocamlInfixOp
 
 hi def link ocamlPrefixOp       ocamlOperator
