@@ -38,9 +38,6 @@ syn case match
 " Access to the method of an object
 syn match    ocamlMethod       "#"
 
-" Script headers highlighted like comments
-syn match    ocamlComment   "^#!.*" contains=@Spell
-
 " Scripting directives
 syn match    ocamlScript "^#\<\(quit\|labels\|warnings\|warn_error\|directory\|remove_directory\|cd\|load\|load_rec\|use\|mod_use\|install_printer\|remove_printer\|require\|list\|ppx\|principal\|predicates\|rectypes\|thread\|trace\|untrace\|untrace_all\|print_depth\|print_length\|camlp4o\|camlp4r\|topfind_log\|topfind_verbose\)\>"
 
@@ -263,6 +260,9 @@ else
   syn match    ocamlKeyChar    "<-[~?!.:|&$%<=>@^*/+-]\@!"
 endif
 
+" Script shebang (has to be declared after operators)
+syn match    ocamlShebang       "^#!.*" contains=@Spell
+
 syn match    ocamlNumber        "-\=\<\d\(_\|\d\)*[l|L|n]\?\>"
 syn match    ocamlNumber        "-\=\<0[x|X]\(\x\|_\)\+[l|L|n]\?\>"
 syn match    ocamlNumber        "-\=\<0[o|O]\(\o\|_\)\+[l|L|n]\?\>"
@@ -313,6 +313,7 @@ hi def link ocamlCharErr	   Error
 hi def link ocamlErr	   Error
 
 hi def link ocamlComment	   Comment
+hi def link ocamlShebang    ocamlComment
 
 hi def link ocamlModPath	   Include
 hi def link ocamlObject	   Include
