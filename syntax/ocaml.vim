@@ -261,7 +261,7 @@ else
 endif
 
 " Script shebang (has to be declared after operators)
-syn match    ocamlShebang       "^#!.*" contains=@Spell
+syn match    ocamlShebang       "\%1l^#!.*$"
 
 syn match    ocamlNumber        "-\=\<\d\(_\|\d\)*[l|L|n]\?\>"
 syn match    ocamlNumber        "-\=\<0[x|X]\(\x\|_\)\+[l|L|n]\?\>"
