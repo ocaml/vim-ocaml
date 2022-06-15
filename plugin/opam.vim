@@ -11,7 +11,7 @@ let g:loaded_opam = 1
 " Utility {{{1
 
 function! opam#eval_env()
-  let opam_eval = system("opam env --read-only")
+  let opam_eval = system("opam env --readonly")
   let cmds = split(opam_eval, "\n")
   for cmd in cmds
     let var = split(split(cmd, ";")[0], "=")
