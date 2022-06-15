@@ -48,24 +48,27 @@ endfunction
 " }}}1
 " :Opam {{{1
 
+function! opam#cmd_switch(version)
+  let success = opam#switch(a:version)
+  if success
+    echomsg "Using " . g:opam_current_compiler
+  else
+    echoerr "Switching to " . a:version . " failed"
+  endif
+endfunction
+
 function! s:Opam(bang,...) abort
-  if len(a:000) > 1 && a:1 ==# "switch"
-    let l:switch = 1
-    let l:version = a:2
-  else
-    let l:switch = 1
-    let l:version = a:1
-  end
-  if switch
-    let success = opam#switch(l:version)
-    if success
-      return 'echomsg "Using ' . g:opam_current_compiler . '"'
+  if len(a:000) > 1
+    if a:1 ==# "switch"
+      call opam#cmd_switch(a:2)
     else
-      return 'echoerr "Switching to ' . l:version . ' failed"'
-    endif
+      echoerr "Only switching is supported for now"
+    end
+  elseif len(a:000) > 0
+    call opam#cmd_switch(a:1)
   else
-    return 'echoerr "Only switching is supported for now"'
-  else
+    call opam#cmd_switch(opam#compiler_version())
+  end
 endfunction
 
 function! s:Complete(A,L,P)
@@ -74,7 +77,7 @@ function! s:Complete(A,L,P)
   return join(switches, "\n")
 endfunction
 
-command! -bar -nargs=* -complete=custom,s:Complete Opam :execute s:Opam(<bang>0,<f-args>)
+command! -bar -nargs=* -complete=custom,s:Complete Opam :call s:Opam(<bang>0,<f-args>)
 
 " }}}1
 " Statusline {{{1
