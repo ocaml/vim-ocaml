@@ -17,6 +17,7 @@ function! opam#eval_env()
     let var = split(split(cmd, ";")[0], "=")
     execute 'let $' . var[0] . " = " . var[1]
   endfor
+  let g:opam_current_compiler = opam#compiler_version()
 endfunction
 
 function! opam#switch(ocaml_version)
@@ -24,7 +25,6 @@ function! opam#switch(ocaml_version)
   let success = empty(matchstr(res, 'ERROR'))
   if success
     call opam#eval_env()
-    let g:opam_current_compiler = opam#compiler_version()
   endif
   return success
 endfunction
@@ -67,7 +67,8 @@ function! s:Opam(bang,...) abort
   elseif len(a:000) > 0
     call opam#cmd_switch(a:1)
   else
-    call opam#cmd_switch(opam#compiler_version())
+    call opam#eval_env()
+    echomsg "Using " . g:opam_current_compiler
   end
 endfunction
 
