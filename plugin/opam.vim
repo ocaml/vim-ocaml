@@ -11,13 +11,17 @@ let g:loaded_opam = 1
 " Utility {{{1
 
 function! opam#eval_env()
-  let opam_eval = system("opam env --readonly")
+  let opam_eval = system("opam env --readonly --set-switch --set-root")
+  if v:shell_error
+    return 0
+  endif
   let cmds = split(opam_eval, "\n")
   for cmd in cmds
     let var = split(split(cmd, ";")[0], "=")
     execute 'let $' . var[0] . " = " . var[1]
   endfor
-  let g:opam_current_compiler = opam#compiler_version()
+  let g:opam_current_compiler = $OPAMSWITCH
+  return 1
 endfunction
 
 function! opam#switch(ocaml_version)
@@ -31,10 +35,6 @@ endfunction
 
 function! opam#chomp(s)
   return substitute(a:s, '\n', '', 'g')
-endfunction
-
-function! opam#compiler_version()
-  return opam#chomp(system("opam switch show"))
 endfunction
 
 function! s:shellesc(arg) abort
@@ -67,8 +67,11 @@ function! s:Opam(bang,...) abort
   elseif len(a:000) > 0
     call opam#cmd_switch(a:1)
   else
-    call opam#eval_env()
-    echomsg "Using " . g:opam_current_compiler
+    if opam#eval_env()
+      echomsg "Using " . g:opam_current_compiler
+    else
+      echomsg "Updating the environment failed."
+    endif
   end
 endfunction
 
@@ -84,12 +87,10 @@ command! -bar -nargs=* -complete=custom,s:Complete Opam :call s:Opam(<bang>0,<f-
 " Statusline {{{1
 
 function! opam#statusline()
-  if exists('g:opam_current_compiler')
-    let c = g:opam_current_compiler
-  else
-    let c = opam#compiler_version()
+  if !exists('g:opam_current_compiler')
+    call opam#eval_env()
   endif
-  return substitute('['.c.']','^\[\]$','','')
+  return substitute('['.g:opam_current_compiler.']','^\[\]$','','')
 endfunction
 
 function! opam#statusline_ft_ocaml()
