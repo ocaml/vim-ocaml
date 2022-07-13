@@ -7,7 +7,9 @@ This plugin is only available if 'compatible' is not set.
 
 COMMANDS                                        *:opam*
 
-:Opam {version}          Set the current OCaml version to {version}.
+:Opam                    With no argument. Refresh the environment using |opam env|.
+
+:Opam {version}          Set the current switch to {version}.
 
 ABOUT                                           *opam-about*
 
