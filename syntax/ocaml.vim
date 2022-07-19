@@ -472,13 +472,23 @@ syn region ocamlTypeSumAnnot contained
 \ contains=@ocamlTypeExpr,ocamlTypeRecordDecl,ocamlComment,ocamlPpx
 hi link ocamlTypeSumAnnot ocamlTypeCatchAll
 
+" RHS of a ocamlTypeDef
+syn region ocamlTypeDefImpl
+\ matchgroup=ocamlKeyword start="\(=\|:\|of\)"
+\ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|)\|]\|}\|;\|;;\)\@="
+\ contained skipwhite skipempty
+\ contains=@ocamlTypeExpr,ocamlTypeEq,ocamlTypePrivate,ocamlTypeDefDots,ocamlTypeRecordDecl,ocamlTypeSumDecl,ocamlTypeDefAnd,ocamlComment,ocamlPpx
+hi link ocamlTypeDefImpl ocamlTypeCatchAll
+
 " Type context opened by “type” (type definition), “constraint” (type
 " constraint) and “exception” (exception definition)
 syn region ocamlTypeDef
 \ matchgroup=ocamlKeyword start="\<type\>\(\_s\+\<nonrec\>\)\?\|\<constraint\>\|\<exception\>"
-\ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|)\|]\|}\|;\|;;\)\@="
-\ contains=@ocamlTypeExpr,ocamlTypeEq,ocamlTypePrivate,ocamlTypeDefDots,ocamlTypeRecordDecl,ocamlTypeSumDecl,ocamlTypeDefAnd,ocamlComment,ocamlPpx
-hi link ocamlTypeDef ocamlTypeCatchAll
+\ matchgroup=ocamlTypedef end="\<\(\w\|'\)*\>"
+\ contains=@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar
+\ skipwhite skipempty
+\ nextgroup=ocamlTypeDefImpl
+
 syn cluster ocamlTypeContained add=ocamlTypePrivate
 syn keyword ocamlTypePrivate contained private
 hi link ocamlTypePrivate ocamlKeyword
