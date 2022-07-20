@@ -480,11 +480,21 @@ syn region ocamlTypeDefImpl
 \ contains=@ocamlTypeExpr,ocamlTypeEq,ocamlTypePrivate,ocamlTypeDefDots,ocamlTypeRecordDecl,ocamlTypeSumDecl,ocamlTypeDefAnd,ocamlComment,ocamlPpx
 hi link ocamlTypeDefImpl ocamlTypeCatchAll
 
-" Type context opened by “type” (type definition), “constraint” (type
-" constraint) and “exception” (exception definition)
+" Type context opened by “type” (type definition) and “constraint” (type
+" constraint).
+" Match the opening keyword and the identifier then jump into
+" ocamlTypeDefImpl.
 syn region ocamlTypeDef
-\ matchgroup=ocamlKeyword start="\<type\>\(\_s\+\<nonrec\>\)\?\|\<constraint\>\|\<exception\>"
-\ matchgroup=ocamlTypedef end="\<\(\w\|'\)*\>"
+\ matchgroup=ocamlKeyword start="\<type\>\(\_s\+\<nonrec\>\)\?\|\<constraint\>"
+\ matchgroup=ocamlLCIdentifier end="\<\l\(\w\|'\)*\>"
+\ contains=@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar
+\ skipwhite skipempty
+\ nextgroup=ocamlTypeDefImpl
+
+" Exception definitions. Like ocamlTypeDef, jump into ocamlTypeDefImpl.
+syn region ocamlExceptionDef
+\ matchgroup=ocamlKeyword start="\<exception\>"
+\ matchgroup=ocamlConstructor end="\u\(\w\|'\)*\>"
 \ contains=@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar
 \ skipwhite skipempty
 \ nextgroup=ocamlTypeDefImpl
