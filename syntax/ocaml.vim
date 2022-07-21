@@ -37,6 +37,8 @@ setlocal iskeyword+=`
 " OCaml is case sensitive.
 syn case match
 
+syn match ocamlWhite /[ \t\n\r]*/
+
 " Access to the method of an object
 syn match    ocamlMethod       "#"
 
@@ -488,8 +490,8 @@ hi link ocamlTypeDefImpl ocamlTypeCatchAll
 " ocamlTypeDefImpl.
 syn region ocamlTypeDef
 \ matchgroup=ocamlKeyword start="\<type\>\(\_s\+\<nonrec\>\)\?\|\<constraint\>"
-\ matchgroup=ocamlLCIdentifier end="\<\l\(\w\|'\)*\>"
-\ contains=@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar
+\ matchgroup=ocamlTypeIdentifier end="\<\l\(\w\|'\)*\>"
+\ contains=@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar,ocamlWhite
 \ skipwhite skipempty
 \ nextgroup=ocamlTypeDefImpl,ocamlTypeDefAnd
 
@@ -499,8 +501,8 @@ syn region ocamlTypeDef
 " ocamlTypeDefImpl.
 syn region ocamlTypeDefAnd
 \ matchgroup=ocamlKeyword start="\<and\>"
-\ matchgroup=ocamlLCIdentifier end="\<\l\(\w\|'\)*\>"
-\ contains=@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar
+\ matchgroup=ocamlTypeIdentifier end="\<\l\(\w\|'\)*\>"
+\ contains=@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar,ocamlWhite
 \ skipwhite skipempty
 \ nextgroup=ocamlTypeDefImpl,ocamlTypeDefAnd
 
@@ -512,6 +514,7 @@ syn region ocamlExceptionDef
 \ skipwhite skipempty
 \ nextgroup=ocamlTypeDefImpl
 
+hi link ocamlTypeIdentifier ocamlLCIdentifier
 syn cluster ocamlTypeContained add=ocamlTypePrivate
 syn keyword ocamlTypePrivate contained private
 hi link ocamlTypePrivate ocamlKeyword
