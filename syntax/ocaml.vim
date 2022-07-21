@@ -475,13 +475,14 @@ hi link ocamlTypeSumAnnot ocamlTypeCatchAll
 syn region ocamlTypeDefImpl
 \ matchgroup=ocamlKeyword start="\<of\>"
 \ matchgroup=ocamlKeyChar start=":="
+\ matchgroup=ocamlKeyChar start="+="
 \ matchgroup=ocamlKeyChar start=":"
 \ matchgroup=ocamlKeyChar start="="
-\ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|)\|]\|}\|;\|;;\)\@="
+\ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|)\|]\|}\|;\|;;\|=\)\@="
 \ matchgroup=NONE end="\(\<and\>\)\@="
 \ contained skipwhite skipempty
 \ contains=@ocamlTypeExpr,ocamlTypePrivate,ocamlTypeDefDots,ocamlTypeRecordDecl,ocamlTypeSumDecl,ocamlComment,ocamlPpx
-\ nextgroup=ocamlTypeDefAnd
+\ nextgroup=ocamlTypeDefImpl,ocamlTypeDefAnd
 hi link ocamlTypeDefImpl ocamlTypeCatchAll
 
 " Type context opened by “type” (type definition) and “constraint” (type
@@ -491,7 +492,7 @@ hi link ocamlTypeDefImpl ocamlTypeCatchAll
 syn region ocamlTypeDef
 \ matchgroup=ocamlKeyword start="\<type\>\(\_s\+\<nonrec\>\)\?\|\<constraint\>"
 \ matchgroup=ocamlTypeIdentifier end="\<\l\(\w\|'\)*\>"
-\ contains=@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar,ocamlWhite
+\ contains=@ocamlTypeExpr,@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar,ocamlPpx,ocamlWhite
 \ skipwhite skipempty
 \ nextgroup=ocamlTypeDefImpl,ocamlTypeDefAnd
 
@@ -502,7 +503,7 @@ syn region ocamlTypeDef
 syn region ocamlTypeDefAnd
 \ matchgroup=ocamlKeyword start="\<and\>"
 \ matchgroup=ocamlTypeIdentifier end="\<\l\(\w\|'\)*\>"
-\ contains=@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar,ocamlWhite
+\ contains=@ocamlTypeExpr,@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar,ocamlPpx,ocamlWhite
 \ skipwhite skipempty
 \ nextgroup=ocamlTypeDefImpl,ocamlTypeDefAnd
 
@@ -510,7 +511,7 @@ syn region ocamlTypeDefAnd
 syn region ocamlExceptionDef
 \ matchgroup=ocamlKeyword start="\<exception\>"
 \ matchgroup=ocamlConstructor end="\u\(\w\|'\)*\>"
-\ contains=@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar
+\ contains=@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar,ocamlPpx
 \ skipwhite skipempty
 \ nextgroup=ocamlTypeDefImpl
 
