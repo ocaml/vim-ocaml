@@ -7,8 +7,8 @@
 " URL:          https://github.com/ocaml/vim-ocaml
 " Last Change:
 "               2022 Jul 20 - Improved highlighting of type decl (Jules Aguillon)
-"               2019 Nov 05 - Accurate type highlighting (Maëlan)
-"               2018 Nov 08 - Improved highlighting of operators (Maëlan)
+"               2022 Jul 18 - Accurate type highlighting (Maëlan)
+"               2019 Feb 21 - Improved highlighting of operators (Maëlan)
 "               2018 Apr 22 - Improved support for PPX (Andrey Popp)
 "               2018 Mar 16 - Remove raise, lnot and not from keywords (Étienne Millon, "copy")
 "               2017 Apr 11 - Improved matching of negative numbers (MM)
