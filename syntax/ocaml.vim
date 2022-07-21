@@ -316,7 +316,7 @@ syn cluster ocamlTypeExpr add=ocamlTypeParen
 syn region ocamlTypeParen contained transparent
 \ matchgroup=ocamlEncl start="(\*\@!"
 \ matchgroup=ocamlEncl end=")"
-\ contains=@ocamlTypeExpr
+\ contains=@ocamlTypeExpr,ocamlComment,ocamlPpx
 
 syn cluster ocamlTypeExpr add=ocamlTypeKeyChar,ocamlTypeAs
 syn match    ocamlTypeKeyChar  contained  "->"
@@ -379,7 +379,7 @@ syn cluster ocamlTypeExpr add=ocamlTypeObject
 syn region ocamlTypeObject contained
 \ matchgroup=ocamlEncl start="<"
 \ matchgroup=ocamlEncl end=">"
-\ contains=ocamlTypeObjectDots,ocamlLCIdentifier,ocamlTypeObjectAnnot,ocamlTypeBlank,ocamlComment
+\ contains=ocamlTypeObjectDots,ocamlLCIdentifier,ocamlTypeObjectAnnot,ocamlTypeBlank,ocamlComment,ocamlPpx
 hi link ocamlTypeObject ocamlTypeCatchAll
 syn cluster ocamlTypeContained add=ocamlTypeObjectDots
 syn match ocamlTypeObjectDots contained "\.\."

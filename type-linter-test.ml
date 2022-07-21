@@ -317,17 +317,18 @@
     end
   end
 
-(* ATTRIBUTES *)
+(* ATTRIBUTES AND COMMENTS *)
 
-  exception[@my.attr "my payload"] E [@my.attr "my payload"]
-  type[@my.attr "my payload"] t = int [@@my.attr "my payload"]
-  type t = < x : int [@my.attr "my payload"] ; y : int >
-  type t = { x : int [@my.attr "my payload"] ; y : int }
-  type t = { x : int ; [@my.attr "my payload"] y : int }
-  type t = [ `A of int [@my.attr "my payload"] | `B of int ]
-  type t = [ `A of int [@my.attr "my payload"] | `B of int ]
-  type t = | A of int [@my.attr "my payload"] | B of int
-  let _ : unit [@my.attr "my payload"] = ()
+  exception[@my.attr "payld"] (*c*) E [@my.attr "payld"] (*c*)
+  type[@my.attr "payld"] (*c*) t (*c*) = (*c*) int [@@my.attr "payld"] (*c*)
+  type t = (int [@my.attr "payld"] (*c*))
+  type t = < x : int [@my.attr "payld"] ; (*c*) y (*c*) : (*c*) int (*c*) >
+  type t = < x : int ; [@my.attr "payld"] (*c*) y (*c*) : (*c*) int (*c*) >
+  type t = { x : int [@my.attr "payld"] ; (*c*) y (*c*) : (*c*) int (*c*) }
+  type t = { x : int ; [@my.attr "payld"] (*c*) y (*c*) : (*c*) int (*c*) }
+  type t = [ `A of int [@my.attr "payld"] (*c*) | (*c*) `B (*c*) of (*c*) int (*c*) ]
+  type t = | A of int [@my.attr "payld"] (*c*) | (*c*) B (*c*) of (*c*) int (*c*)
+  let _ : unit [@my.attr "payld"] (*c*) = ()
 
 (* VARIOUS TRAPS *)
 
