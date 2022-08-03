@@ -359,5 +359,6 @@
   let f = ( fun x -> x : int -> int  )  (* x is an expr of type int *)
   let f (=) x = ( x = x : int -> bool ) (* totally irrealistic case *)
 
-  (* FIXME the unsolvable problem *)
+  (* return type of a `fun` *)
   let _ = fun x : int -> 42 (* int is the return type, `->` ends the type! *)
+  let _ = fun (f : int -> int) : int -> 42

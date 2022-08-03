@@ -169,7 +169,7 @@ syn region ocamlString matchgroup=ocamlQuotedStringDelim start="{%[a-z_]\+\(\.[a
 
 syn keyword  ocamlKeyword  and as assert class
 syn keyword  ocamlKeyword  else
-syn keyword  ocamlKeyword  external fun
+syn keyword  ocamlKeyword  external
 syn keyword  ocamlKeyword  in inherit initializer
 syn keyword  ocamlKeyword  lazy let match
 syn keyword  ocamlKeyword  method new
@@ -180,6 +180,13 @@ syn keyword  ocamlKeyword  virtual when while with
 " Keywords which are handled by the type linter:
 "     as (within a type equation)
 "     constraint exception mutable nonrec of private type
+
+" The `fun` keyword has special treatment because of the syntax `fun … : t -> e`
+" where `->` ends the type context rather than being part of it; to handle that,
+" we blacklist the ocamlTypeAnnot matchgroup, and we plug ocamlFunTypeAnnot
+" instead (later in this file, by using containedin=ocamlFun):
+syn region ocamlFun matchgroup=ocamlKeyword start='\<fun\>' matchgroup=ocamlArrow end='->'
+\ contains=ALLBUT,@ocamlContained,ocamlArrow,ocamlInfixOp,ocamlTypeAnnot
 
 if exists("ocaml_revised")
   syn keyword  ocamlKeyword  do value
@@ -498,6 +505,15 @@ syn region ocamlTypeAnnot matchgroup=ocamlKeyChar start=":\(>\|\_s*type\>\|[>:=]
 \ matchgroup=NONE end="\(=\|:>\)\@="
 \ contains=@ocamlTypeExpr,ocamlComment,ocamlPpx
 hi link ocamlTypeAnnot ocamlTypeCatchAll
+
+" Type annotation that gives the return type of a `fun` keyword
+" (the type context is ended by `->`)
+syn cluster ocamlTypeContained add=ocamlFunTypeAnnot
+syn region ocamlFunTypeAnnot contained containedin=ocamlFun
+\ matchgroup=ocamlKeyChar start=":"
+\ matchgroup=NONE end="\(->\)\@="
+\ contains=@ocamlTypeExpr,ocamlComment,ocamlPpx
+hi link ocamlFunTypeAnnot ocamlTypeCatchAll
 
 " Module paths (including functors) in types.
 " NOTE: This rule must occur after the rule for ocamlTypeSumDecl as it must take
