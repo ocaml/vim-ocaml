@@ -65,9 +65,10 @@ spot dangling closing parentheses).
 **more closing delimiters for sum type definitions**
   + → the additional closing delimiters for `type`
   + `and`
+  + `=` (because of `exception E = F`)
 
 **more closing delimiters for `of` and `:` in sum type definitions**
-  + → the additional closing delimiters for sum type definitions
+  + → the additional closing delimiters for sum type definitions (excepted `=`)
   + `|`
 
 **more closing delimiters for `:` and `: type` and `:>`**
