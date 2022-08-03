@@ -440,7 +440,7 @@ syn region ocamlTypeSumDecl contained
 \ matchgroup=ocamlTypeSumConstr start="\<\u\(\w\|'\)*\>"
 \ matchgroup=ocamlTypeSumConstr start="\<false\>" start="\<true\>"
 \ matchgroup=ocamlTypeSumConstr start="(\_s*)" start="\[\_s*]" start="(\_s*::\_s*)"
-\ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|)\|]\|}\|;\|;;\)\@="
+\ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|)\|]\|}\|;\|;;\|=\)\@="
 \ matchgroup=NONE end="\(\<and\>\)\@="
 \ contains=ocamlTypeSumBar,ocamlTypeSumConstr,ocamlTypeSumAnnot,ocamlTypeBlank,ocamlComment,ocamlPpx
 hi link ocamlTypeSumDecl ocamlTypeCatchAll

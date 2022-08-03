@@ -139,7 +139,8 @@
   exception E
   exception E of int
   exception E : int -> exn
-  exception E' = E (* FIXME *)
+  exception E' = E
+  exception F = Stdlib.Not_found
   (* local exceptions *)
   let _ = let exception E in ()
   let _ = let exception E of int * int in ()
