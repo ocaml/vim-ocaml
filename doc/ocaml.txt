@@ -9,4 +9,10 @@ highlighted. You can turn on highlighting of operators by defining:
 
   let g:ocaml_highlight_operators = 1
 
+                                                 *g:ocaml_use_v2_syntax*
+
+Use new syntax declarations, which correctly highlight types. Currently this
+syntax has a few bugs in the presence of module and functor types, and is
+therefore disabled by default.
+
  vim:tw=78:et:ft=help:norl:
