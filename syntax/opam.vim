@@ -31,7 +31,6 @@ syn keyword opamKeyword1 maintainer
 syn keyword opamKeyword1 messages
 syn keyword opamKeyword1 name
 syn keyword opamKeyword1 patches
-syn keyword opamKeyword1 pin-depends
 syn keyword opamKeyword1 remove
 syn keyword opamKeyword1 run-test
 syn keyword opamKeyword1 setenv
@@ -40,7 +39,7 @@ syn keyword opamKeyword1 synopsis
 syn keyword opamKeyword1 syntax
 syn keyword opamKeyword1 tags
 syn keyword opamKeyword1 version
-syn match opamKeyword2 "\v(bug-reports|post-messages|opam-version|dev-repo|build)"
+syn match opamKeyword2 "\v(bug-reports|post-messages|opam-version|dev-repo|pin-depends|build)"
 
 syn keyword opamTodo FIXME NOTE NOTES TODO XXX contained
 syn match opamComment "#.*$" contains=opamTodo,@Spell
