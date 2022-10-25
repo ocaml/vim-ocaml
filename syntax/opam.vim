@@ -14,6 +14,7 @@ endif
 syn keyword opamKeyword1 author
 syn keyword opamKeyword1 authors
 syn keyword opamKeyword1 available
+syn keyword opamKeyword1 conflict-class
 syn keyword opamKeyword1 conflicts
 syn keyword opamKeyword1 depends
 syn keyword opamKeyword1 depexts
