@@ -598,6 +598,7 @@ hi def link ocamlConstructor  Constant
 hi def link ocamlEmptyConstructor  ocamlConstructor
 
 hi def link ocamlVal          Keyword
+hi def link ocamlModTypePre   Keyword
 hi def link ocamlModPreRHS    Keyword
 hi def link ocamlFunctor	   Keyword
 hi def link ocamlModTypeOf  Keyword
