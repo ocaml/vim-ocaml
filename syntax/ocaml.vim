@@ -146,7 +146,7 @@ syn match    ocamlFullMod "\<\u\(\w\|'\)*\( *\. *\u\(\w\|'\)*\)*" contained skip
 
 syn region   ocamlFuncWith start="([*)]\@!" end=")" contained contains=ocamlComment,ocamlWith,ocamlStruct skipwhite skipempty nextgroup=ocamlFuncWith
 
-syn region   ocamlModTRWith start=":\s*("hs=s+1 end=")" contained contains=@ocamlAENoParen,ocamlWith
+syn region   ocamlModTRWith start=":\s*(\*\@!"hs=s+1 end=")" contained contains=@ocamlAENoParen,ocamlWith
 syn match    ocamlWith "\<\(\u\(\w\|'\)* *\. *\)*\w\(\w\|'\)*\>" contained skipwhite skipempty nextgroup=ocamlWithRest
 syn region   ocamlWithRest start="[^)]" end=")"me=e-1 contained contains=ALLBUT,@ocamlContained
 
