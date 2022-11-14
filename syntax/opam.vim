@@ -11,6 +11,7 @@ endif
 
 " need %{vars}%
 " env: [[CAML_LD_LIBRARY_PATH = "%{lib}%/stublibs"]]
+syn iskeyword a-z,A-Z,-
 syn keyword opamKeyword1 author
 syn keyword opamKeyword1 authors
 syn keyword opamKeyword1 available
