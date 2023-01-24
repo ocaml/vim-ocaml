@@ -129,7 +129,7 @@ syn match    ocamlKeyword "\<include\>" skipwhite skipempty nextgroup=ocamlModPa
 
 " "module" - somewhat complicated stuff ;-)
 " 2022-10: please document it?
-syn region   ocamlModule matchgroup=ocamlKeyword start="\<module\>" matchgroup=ocamlModule end="\<\u\(\w\|'\)*\>" contains=@ocamlAllErrs,ocamlComment skipwhite skipempty nextgroup=ocamlPreDef
+syn region   ocamlModule matchgroup=ocamlKeyword start="\<module\>" matchgroup=ocamlModule end="\<_\|\u\(\w\|'\)*\>" contains=@ocamlAllErrs,ocamlComment skipwhite skipempty nextgroup=ocamlPreDef
 syn region   ocamlPreDef start="."me=e-1 end="[a-z:=)]\@=" contained contains=@ocamlAllErrs,ocamlComment,ocamlModParam,ocamlGenMod,ocamlModTypeRestr nextgroup=ocamlModTypePre,ocamlModPreRHS
 syn region   ocamlModParam start="(\*\@!" end=")" contained contains=ocamlGenMod,ocamlModParam,ocamlModParam1,ocamlSig,ocamlVal
 syn match    ocamlModParam1 "\<\u\(\w\|'\)*\>" contained skipwhite skipempty
