@@ -1,0 +1,2 @@
+(* ok *)
+exception E = F
