@@ -465,21 +465,15 @@ syn cluster ocamlTypeContained add=ocamlTypeSumAnnot
 syn region ocamlTypeSumAnnot contained
 \ matchgroup=ocamlKeyword start="\<of\>"
 \ matchgroup=ocamlKeyChar start=":"
-\ matchgroup=NONE end="|\@="
-\ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|)\|]\|}\|;\|;;\)\@="
-\ matchgroup=NONE end="\(\<and\>\)\@="
+\ matchgroup=NONE end="\(|\|\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|\<and\>\|)\|]\|}\|;\|;;\)\@="
 \ contains=@ocamlTypeExpr,ocamlTypeRecordDecl,ocamlComment,ocamlPpx
 hi link ocamlTypeSumAnnot ocamlTypeCatchAll
 
 " RHS of a ocamlTypeDef
 syn region ocamlTypeDefImpl
 \ matchgroup=ocamlKeyword start="\<of\>"
-\ matchgroup=ocamlKeyChar start=":="
-\ matchgroup=ocamlKeyChar start="+="
-\ matchgroup=ocamlKeyChar start=":"
-\ matchgroup=ocamlKeyChar start="="
-\ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|)\|]\|}\|;\|;;\|=\)\@="
-\ matchgroup=NONE end="\(\<and\>\)\@="
+\ matchgroup=ocamlKeyChar start=":=\|+=\|:\|="
+\ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|\<and\>\|)\|]\|}\|;\|;;\|=\)\@="
 \ contained skipwhite skipempty
 \ contains=@ocamlTypeExpr,ocamlTypePrivate,ocamlTypeDefDots,ocamlTypeRecordDecl,ocamlTypeSumDecl,ocamlComment,ocamlPpx
 \ nextgroup=ocamlTypeDefImpl,ocamlTypeDefAnd
@@ -535,9 +529,7 @@ syn match ocamlKeyword "(\_s*exception\>"lc=1
 " Type context opened by “:” (countless kinds of type annotations) and “:>”
 " (type coercions)
 syn region ocamlTypeAnnot matchgroup=ocamlKeyChar start=":\(>\|\_s*type\>\|[>:=]\@!\)"
-\ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|\<and\>\|)\|]\|}\|;\|;;\)\@="
-\ matchgroup=NONE end="\(;\|}\)\@="
-\ matchgroup=NONE end="\(=\|:>\)\@="
+\ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|\<and\>\|)\|]\|}\|;\|;;\|=\|:>\)\@="
 \ contains=@ocamlTypeExpr,ocamlComment,ocamlPpx
 hi link ocamlTypeAnnot ocamlTypeCatchAll
 
