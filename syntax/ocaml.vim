@@ -484,6 +484,7 @@ syn region ocamlTypeDefImpl
 \ contains=@ocamlTypeExpr,ocamlTypePrivate,ocamlTypeDefDots,ocamlTypeRecordDecl,ocamlTypeSumDecl,ocamlComment,ocamlPpx
 \ nextgroup=ocamlTypeDefImpl,ocamlTypeDefAnd
 hi link ocamlTypeDefImpl ocamlTypeCatchAll
+syn cluster ocamlContained add=ocamlTypeDefImpl
 
 " Type context opened by “type” (type definition) and “constraint” (type
 " constraint).
