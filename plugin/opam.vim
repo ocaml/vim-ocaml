@@ -11,6 +11,7 @@ let g:loaded_opam = 1
 " Utility {{{1
 
 function! opam#eval_env()
+  unlet $OPAMSWITCH
   let opam_eval = system("opam env --readonly --set-switch --set-root")
   if v:shell_error
     return 0
