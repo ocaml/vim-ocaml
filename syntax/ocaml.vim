@@ -47,6 +47,7 @@ syn match    ocamlScript "^#\<\(quit\|labels\|warnings\|warn_error\|directory\|r
 
 " lowercase identifier - the standard way to match
 syn match    ocamlLCIdentifier /\<\(\l\|_\)\(\w\|'\)*\>/
+syn match    ocamlTypeIdentifier /\<\(\l\|_\)\(\w\|'\)*\>/
 
 " Errors
 syn match    ocamlBraceErr   "}"
@@ -476,7 +477,6 @@ syn region ocamlTypeDefImpl
 \ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|\<and\>\|)\|]\|}\|;\|;;\|=\)\@="
 \ contained skipwhite skipempty
 \ contains=@ocamlTypeExpr,ocamlTypePrivate,ocamlTypeDefDots,ocamlTypeRecordDecl,ocamlTypeSumDecl,ocamlComment,ocamlPpx
-\ nextgroup=ocamlTypeDefImpl,ocamlTypeDefAnd
 hi link ocamlTypeDefImpl ocamlTypeCatchAll
 syn cluster ocamlContained add=ocamlTypeDefImpl
 
@@ -486,10 +486,10 @@ syn cluster ocamlContained add=ocamlTypeDefImpl
 " ocamlTypeDefImpl.
 syn region ocamlTypeDef
 \ matchgroup=ocamlKeyword start="\<type\>\(\_s\+\<nonrec\>\)\?\|\<constraint\>"
-\ matchgroup=ocamlTypeIdentifier end="\<\l\(\w\|'\)*\>"
-\ contains=@ocamlTypeExpr,@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar,ocamlPpx,ocamlWhite
+\ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|\<and\>\)\@="
+\ contains=@ocamlTypeExpr,@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar,ocamlPpx,ocamlWhite,ocamlTypeIdentifier,ocamlTypeDefImpl
 \ skipwhite skipempty
-\ nextgroup=ocamlTypeDefImpl,ocamlTypeDefAnd
+\ nextgroup=ocamlTypeDefAnd
 
 " Type context opened by “type” (type definition) and “constraint” (type
 " constraint).
@@ -497,10 +497,10 @@ syn region ocamlTypeDef
 " ocamlTypeDefImpl.
 syn region ocamlTypeDefAnd
 \ matchgroup=ocamlKeyword start="\<and\>"
-\ matchgroup=ocamlTypeIdentifier end="\<\l\(\w\|'\)*\>"
-\ contains=@ocamlTypeExpr,@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar,ocamlPpx,ocamlWhite
+\ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|\<and\>\)\@="
+\ contains=@ocamlTypeExpr,@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar,ocamlPpx,ocamlWhite,ocamlTypeIdentifier,ocamlTypeDefImpl
 \ skipwhite skipempty
-\ nextgroup=ocamlTypeDefImpl,ocamlTypeDefAnd
+\ nextgroup=ocamlTypeDefAnd
 
 " Exception definitions. Like ocamlTypeDef, jump into ocamlTypeDefImpl.
 syn region ocamlExceptionDef

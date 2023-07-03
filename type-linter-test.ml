@@ -353,6 +353,8 @@
   type t = [ `A of int [@my.attr "payld"] (*c*) | (*c*) `B (*c*) of (*c*) int (*c*) ]
   type t = | A of int [@my.attr "payld"] (*c*) | (*c*) B (*c*) of (*c*) int (*c*)
   let _ : unit [@my.attr "payld"] (*c*) = ()
+  type t (*c*) = int
+  and u (*c*) = float
 
 (* VARIOUS TRAPS *)
 
