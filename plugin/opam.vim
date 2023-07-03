@@ -8,11 +8,21 @@ endif
 
 let g:loaded_opam = 1
 
+if !exists('g:opam_set_switch')
+  let g:opam_set_switch = 0
+endif
+
 " Utility {{{1
 
 function! opam#eval_env()
-  unlet $OPAMSWITCH
-  let opam_eval = system("opam env --readonly --set-switch --set-root")
+  let l:env_extra_args = ""
+  if g:opam_set_switch
+    " Unlet so 'opam env' uses the selected switch
+    unlet $OPAMSWITCH
+    " Will add OPAMSWITCH and OPAMROOT to the output
+    let l:env_extra_args = " --set-switch --set-root"
+  endif
+  let opam_eval = system("opam env --readonly" . l:env_extra_args)
   if v:shell_error
     return 0
   endif
@@ -21,7 +31,11 @@ function! opam#eval_env()
     let var = split(split(cmd, ";")[0], "=")
     execute 'let $' . var[0] . " = " . var[1]
   endfor
-  let g:opam_current_compiler = $OPAMSWITCH
+  if g:opam_set_switch
+    let g:opam_current_compiler = $OPAMSWITCH
+  else
+    let g:opam_current_compiler = opam#compiler_version()
+  endif
   return 1
 endfunction
 
@@ -36,6 +50,10 @@ endfunction
 
 function! opam#chomp(s)
   return substitute(a:s, '\n', '', 'g')
+endfunction
+
+function! opam#compiler_version()
+  return opam#chomp(system("opam switch show"))
 endfunction
 
 function! s:shellesc(arg) abort
@@ -88,10 +106,12 @@ command! -bar -nargs=* -complete=custom,s:Complete Opam :call s:Opam(<bang>0,<f-
 " Statusline {{{1
 
 function! opam#statusline()
-  if !exists('g:opam_current_compiler')
-    call opam#eval_env()
+  if exists('g:opam_current_compiler')
+    let c = g:opam_current_compiler
+  else
+    let c = opam#compiler_version()
   endif
-  return substitute('['.g:opam_current_compiler.']','^\[\]$','','')
+  return substitute('['.c.']','^\[\]$','','')
 endfunction
 
 function! opam#statusline_ft_ocaml()

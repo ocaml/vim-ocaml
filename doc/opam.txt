@@ -11,6 +11,20 @@ COMMANDS                                        *:opam*
 
 :Opam {version}          Set the current switch to {version}.
 
+CONFIGURATION                                    *opam-configuration*
+
+                                                 *g:opam_set_switch*
+
+If this variable is set to a non-zero value, |:Opam| will set the |$OPAMSWITCH|
+environment variable. This variable will make sure that every |opam| commands
+run from inside Vim will continue to act on the same switch even if the
+selected switch is changed.
+This also mean that selecting a different switch without using the |:Opam|
+command will not take effect in this instance of Vim.
+Defaults to |0|.
+
+  let g:opam_set_switch = 1
+
 ABOUT                                           *opam-about*
 
 Grab the latest version or report a bug on GitHub:
