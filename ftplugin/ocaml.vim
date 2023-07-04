@@ -642,7 +642,7 @@ endfunction
   xnoremap <silent> <Plug>OCamlPrintType :<C-U>call Ocaml_print_type("visual")<CR>`<
 
 " Make sure the environment is consistent
-if !exists('g:opam_current_compiler') && exists('g:opam_set_switch') && g:opam_set_switch != 0
+if !exists('g:opam_current_compiler') && exists('g:opam_init_env') && g:opam_init_env != 0
   call opam#eval_env()
 endif
 

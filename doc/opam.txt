@@ -25,6 +25,14 @@ Defaults to |0|.
 
   let g:opam_set_switch = 1
 
+                                                 *g:opam_init_env*
+
+If this variable is set to a non-zero value, Opam's environment will be
+refreshed when the plugin is loaded for the first time.
+This is equivalent to calling |:Opam| when first opening an OCaml file.
+
+  let g:opam_init_env = 1
+
 ABOUT                                           *opam-about*
 
 Grab the latest version or report a bug on GitHub:
