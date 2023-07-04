@@ -8,16 +8,35 @@ endif
 
 let g:loaded_opam = 1
 
+if !exists('g:opam_set_switch')
+  let g:opam_set_switch = 0
+endif
+
 " Utility {{{1
 
 function! opam#eval_env()
-  let opam_eval = system("opam env --readonly")
+  let l:env_extra_args = ""
+  if g:opam_set_switch
+    " Unlet so 'opam env' uses the selected switch
+    unlet $OPAMSWITCH
+    " Will add OPAMSWITCH and OPAMROOT to the output
+    let l:env_extra_args = " --set-switch --set-root"
+  endif
+  let opam_eval = system("opam env --readonly" . l:env_extra_args)
+  if v:shell_error
+    return 0
+  endif
   let cmds = split(opam_eval, "\n")
   for cmd in cmds
     let var = split(split(cmd, ";")[0], "=")
     execute 'let $' . var[0] . " = " . var[1]
   endfor
-  let g:opam_current_compiler = opam#compiler_version()
+  if g:opam_set_switch
+    let g:opam_current_compiler = $OPAMSWITCH
+  else
+    let g:opam_current_compiler = opam#compiler_version()
+  endif
+  return 1
 endfunction
 
 function! opam#switch(ocaml_version)
@@ -67,8 +86,11 @@ function! s:Opam(bang,...) abort
   elseif len(a:000) > 0
     call opam#cmd_switch(a:1)
   else
-    call opam#eval_env()
-    echomsg "Using " . g:opam_current_compiler
+    if opam#eval_env()
+      echomsg "Using " . g:opam_current_compiler
+    else
+      echomsg "Updating the environment failed."
+    endif
   end
 endfunction
 

@@ -641,6 +641,11 @@ endfunction
   nnoremap <silent> <Plug>OCamlPrintType :<C-U>call Ocaml_print_type("normal")<CR>
   xnoremap <silent> <Plug>OCamlPrintType :<C-U>call Ocaml_print_type("visual")<CR>`<
 
+" Make sure the environment is consistent
+if !exists('g:opam_current_compiler')
+  call opam#eval_env()
+endif
+
 let &cpoptions=s:cposet
 unlet s:cposet
 
