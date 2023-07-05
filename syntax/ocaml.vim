@@ -501,6 +501,7 @@ syn region ocamlTypeDefAnd
 \ contains=@ocamlTypeExpr,@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar,ocamlPpx,ocamlWhite,ocamlTypeIdentifier,ocamlTypeDefImpl
 \ skipwhite skipempty
 \ nextgroup=ocamlTypeDefAnd
+syn cluster ocamlTypeContained add=ocamlTypeDefAnd
 
 " Exception definitions. Like ocamlTypeDef, jump into ocamlTypeDefImpl.
 syn region ocamlExceptionDef
