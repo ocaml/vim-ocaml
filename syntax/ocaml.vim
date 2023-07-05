@@ -48,6 +48,7 @@ syn match    ocamlScript "^#\<\(quit\|labels\|warnings\|warn_error\|directory\|r
 " lowercase identifier - the standard way to match
 syn match    ocamlLCIdentifier /\<\(\l\|_\)\(\w\|'\)*\>/
 syn match    ocamlTypeIdentifier /\<\(\l\|_\)\(\w\|'\)*\>/
+syn cluster ocamlTypeContained add=ocamlTypeIdentifier
 
 " Errors
 syn match    ocamlBraceErr   "}"
@@ -511,7 +512,6 @@ syn region ocamlExceptionDef
 \ skipwhite skipempty
 \ nextgroup=ocamlTypeDefImpl
 
-hi link ocamlTypeIdentifier ocamlLCIdentifier
 syn cluster ocamlTypeContained add=ocamlTypePrivate
 syn keyword ocamlTypePrivate contained private
 hi link ocamlTypePrivate ocamlKeyword
