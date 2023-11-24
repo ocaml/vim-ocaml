@@ -31,10 +31,21 @@ let current_compiler = "ocaml"
 let s:cpo_save = &cpo
 set cpo&vim
 
-CompilerSet errorformat =
-      \%EFile\ \"%f\"\\,\ lines\ %l-%*\\d\\,\ characters\ %c-%*\\d:,
-      \%EFile\ \"%f\"\\,\ line\ %l\\,\ characters\ %c-%*\\d:,
-      \%EFile\ \"%f\"\\,\ line\ %l\\,\ characters\ %c-%*\\d\ %.%#,
+" Patch 8.2.4329 introduces %e and %k as end line and end column positions
+
+if has('patch-8.2.4329')
+  CompilerSet errorformat =
+        \%EFile\ \"%f\"\\,\ lines\ %l-%e\\,\ characters\ %c-%k:,
+        \%EFile\ \"%f\"\\,\ line\ %l\\,\ characters\ %c-%k:,
+        \%EFile\ \"%f\"\\,\ line\ %l\\,\ characters\ %c-%k\ %.%#,
+else
+  CompilerSet errorformat =
+        \%EFile\ \"%f\"\\,\ lines\ %l-%*\\d\\,\ characters\ %c-%*\\d:,
+        \%EFile\ \"%f\"\\,\ line\ %l\\,\ characters\ %c-%*\\d:,
+        \%EFile\ \"%f\"\\,\ line\ %l\\,\ characters\ %c-%*\\d\ %.%#,
+endif
+
+CompilerSet errorformat +=
       \%EFile\ \"%f\"\\,\ line\ %l\\,\ character\ %c:%m,
       \%EFile\ \"%f\"\\,\ line\ %l:,
       \%+EReference\ to\ unbound\ regexp\ name\ %m,
