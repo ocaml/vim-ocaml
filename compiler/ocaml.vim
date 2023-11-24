@@ -3,6 +3,7 @@
 " Maintainer:  Markus Mottl <markus.mottl@gmail.com>
 " URL:         https://github.com/ocaml/vim-ocaml
 " Last Change:
+"              2023 Nov 24 - Improved error format (Samuel Hym)
 "              2021 Nov 03 - Improved error format (Jules Aguillon)
 "              2020 Mar 28 - Improved error format (Thomas Leonard)
 "              2017 Nov 26 - Improved error format (Markus Mottl)
