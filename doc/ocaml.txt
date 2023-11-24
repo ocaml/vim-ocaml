@@ -9,4 +9,12 @@ highlighted. You can turn on highlighting of operators by defining:
 
   let g:ocaml_highlight_operators = 1
 
+                                           *g:ocaml_compiler_compact_messages*
+
+By default the output of the OCaml compiler is filtered to keep only the
+location and message by the compiler plugin. You can keep the full multi-line
+messages as displayed by the compiler by defining:
+
+  let g:ocaml_compiler_compact_messages = 0
+
  vim:tw=78:et:ft=help:norl:

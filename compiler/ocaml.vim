@@ -11,17 +11,6 @@
 " Marc Weber's comments:
 " Setting makeprg doesn't make sense, because there is ocamlc, ocamlopt,
 " ocamake and whatnot. So which one to use?
-"
-" This error format was moved from ftplugin/ocaml.vim to this file,
-" because ftplugin is the wrong file to set an error format
-" and the error format itself is annoying because it joins many lines in this
-" error case:
-"
-"    Error: The implementation foo.ml does not match the interface foo.cmi:
-"    Modules do not match case.
-"
-" So having it here makes people opt-in
-
 
 if exists("current_compiler")
     finish
@@ -51,10 +40,17 @@ CompilerSet errorformat +=
       \%+EReference\ to\ unbound\ regexp\ name\ %m,
       \%Eocamlyacc:\ e\ -\ line\ %l\ of\ \"%f\"\\,\ %m,
       \%Wocamlyacc:\ w\ -\ %m,
-      \%-Zmake%.%#,
-      \%C%*\\d\ \|%.%#,
-      \%C%p^%#,
-      \%C%m,
+      \%-Zmake%.%#
+
+if get(g:, "ocaml_compiler_compact_messages", v:true)
+  CompilerSet errorformat +=
+        \%C%*\\d\ \|%.%#,
+        \%C%p^%#,
+        \%C%m
+endif
+
+CompilerSet errorformat +=
+      \%Z,
       \%D%*\\a[%*\\d]:\ Entering\ directory\ `%f',
       \%X%*\\a[%*\\d]:\ Leaving\ directory\ `%f',
       \%D%*\\a:\ Entering\ directory\ `%f',
@@ -65,8 +61,12 @@ CompilerSet errorformat +=
       \%X%*\\a:\ Leaving\ directory\ '%f',
       \%DEntering\ directory\ '%f',
       \%XLeaving\ directory\ '%f',
-      \%DMaking\ %*\\a\ in\ %f,
-      \%+G%m
+      \%DMaking\ %*\\a\ in\ %f
+
+if get(g:, "ocaml_compiler_compact_messages", v:true)
+  CompilerSet errorformat +=
+        \%+G%m
+endif
 
 
 let &cpo = s:cpo_save
