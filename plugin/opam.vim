@@ -70,7 +70,14 @@ endfunction
 function! opam#cmd_switch(version)
   let success = opam#switch(a:version)
   if success
-    echomsg "Using " . g:opam_current_compiler
+    if g:opam_current_compiler == a:version
+      let l:extra_msg = ""
+    elseif !g:opam_set_switch && exists('$OPAMSWITCH')
+      let l:extra_msg = " (set with OPAMSWITCH)"
+    else
+      let l:extra_msg = " (local switch)"
+    endif
+    echomsg "Using " . g:opam_current_compiler . l:extra_msg
   else
     echoerr "Switching to " . a:version . " failed"
   endif
