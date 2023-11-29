@@ -23,6 +23,8 @@
   type u = char
   type v = string
   type w = bytes
+  type abstract
+  type !+_ abstract'
 
   (* type expressions with arrows, tuples, 0-ary type constructors *)
   type t = t0 * t0 -> t0
@@ -165,6 +167,24 @@
 
   (* definition of an empty type *)
   type t = |
+
+  (* Constraints *)
+  type 'a foo := 'a bar
+
+(* RECURSION *)
+
+  type foo = bar
+  and bar
+  and baz = foo
+
+  ;;
+  let foo = 1
+  and bar = 2 in
+  ()
+
+  (* FIXME: 'and' part not matched by module decl (maybe matched by types decl ?). *)
+  module rec Foo : sig end = struct end
+  and Bar : sig end = struct end
 
 (* TYPE ANNOTATIONS *)
 
@@ -318,6 +338,9 @@
     end
   end
 
+  (* FIXME: ':=' not recognized and RHS highlighted as constructor. *)
+  module Foo := Bar
+
 (* ATTRIBUTES AND COMMENTS *)
 
   exception[@my.attr "payld"] (*c*) E [@my.attr "payld"] (*c*)
@@ -330,6 +353,8 @@
   type t = [ `A of int [@my.attr "payld"] (*c*) | (*c*) `B (*c*) of (*c*) int (*c*) ]
   type t = | A of int [@my.attr "payld"] (*c*) | (*c*) B (*c*) of (*c*) int (*c*)
   let _ : unit [@my.attr "payld"] (*c*) = ()
+  type t (*c*) = int
+  and u (*c*) = float
 
 (* VARIOUS TRAPS *)
 

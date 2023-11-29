@@ -6,8 +6,9 @@
 "               Issac Trotts      <ijtrotts@ucdavis.edu>
 " URL:          https://github.com/ocaml/vim-ocaml
 " Last Change:
-"               2019 Nov 05 - Accurate type highlighting (Maëlan)
-"               2018 Nov 08 - Improved highlighting of operators (Maëlan)
+"               2022 Jul 20 - Improved highlighting of type decl (Jules Aguillon)
+"               2022 Jul 18 - Accurate type highlighting (Maëlan)
+"               2019 Feb 21 - Improved highlighting of operators (Maëlan)
 "               2018 Apr 22 - Improved support for PPX (Andrey Popp)
 "               2018 Mar 16 - Remove raise, lnot and not from keywords (Étienne Millon, "copy")
 "               2017 Apr 11 - Improved matching of negative numbers (MM)
@@ -36,6 +37,8 @@ setlocal iskeyword+=`
 " OCaml is case sensitive.
 syn case match
 
+syn match ocamlWhite /[ \t\n\r]*/
+
 " Access to the method of an object
 syn match    ocamlMethod       "#"
 
@@ -44,6 +47,8 @@ syn match    ocamlScript "^#\<\(quit\|labels\|warnings\|warn_error\|directory\|r
 
 " lowercase identifier - the standard way to match
 syn match    ocamlLCIdentifier /\<\(\l\|_\)\(\w\|'\)*\>/
+syn match    ocamlTypeIdentifier /\<\(\l\|_\)\(\w\|'\)*\>/
+syn cluster ocamlTypeContained add=ocamlTypeIdentifier
 
 " Errors
 syn match    ocamlBraceErr   "}"
@@ -339,10 +344,6 @@ syn match ocamlTypeVariance contained "[-+!]\ze *\('\|\<_\>\)"
 syn match ocamlTypeVariance contained "[-+] *!\+\ze *\('\|\<_\>\)"
 syn match ocamlTypeVariance contained "! *[-+]\+\ze *\('\|\<_\>\)"
 
-syn cluster ocamlTypeContained add=ocamlTypeEq
-syn match    ocamlTypeEq       contained  "[+:]\?="
-hi link ocamlTypeEq ocamlKeyChar
-
 syn cluster ocamlTypeExpr add=ocamlTypeVar,ocamlTypeConstr,ocamlTypeAnyVar,ocamlTypeBuiltin
 syn match    ocamlTypeVar      contained   "'\(\l\|_\)\(\w\|'\)*\>"
 syn match    ocamlTypeConstr   contained  "\<\(\l\|_\)\(\w\|'\)*\>"
@@ -466,25 +467,54 @@ syn cluster ocamlTypeContained add=ocamlTypeSumAnnot
 syn region ocamlTypeSumAnnot contained
 \ matchgroup=ocamlKeyword start="\<of\>"
 \ matchgroup=ocamlKeyChar start=":"
-\ matchgroup=NONE end="|\@="
-\ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|)\|]\|}\|;\|;;\)\@="
-\ matchgroup=NONE end="\(\<and\>\)\@="
+\ matchgroup=NONE end="\(|\|\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|\<and\>\|)\|]\|}\|;\|;;\)\@="
 \ contains=@ocamlTypeExpr,ocamlTypeRecordDecl,ocamlComment,ocamlPpx
 hi link ocamlTypeSumAnnot ocamlTypeCatchAll
 
-" Type context opened by “type” (type definition), “constraint” (type
-" constraint) and “exception” (exception definition)
+" RHS of a ocamlTypeDef
+syn region ocamlTypeDefImpl
+\ matchgroup=ocamlKeyword start="\<of\>"
+\ matchgroup=ocamlKeyChar start=":=\|+=\|:\|="
+\ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|\<and\>\|)\|]\|}\|;\|;;\|=\)\@="
+\ contained skipwhite skipempty
+\ contains=@ocamlTypeExpr,ocamlTypePrivate,ocamlTypeDefDots,ocamlTypeRecordDecl,ocamlTypeSumDecl,ocamlComment,ocamlPpx
+hi link ocamlTypeDefImpl ocamlTypeCatchAll
+syn cluster ocamlContained add=ocamlTypeDefImpl
+
+" Type context opened by “type” (type definition) and “constraint” (type
+" constraint).
+" Match the opening keyword and the identifier then jump into
+" ocamlTypeDefImpl.
 syn region ocamlTypeDef
-\ matchgroup=ocamlKeyword start="\<type\>\(\_s\+\<nonrec\>\)\?\|\<constraint\>\|\<exception\>"
-\ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|)\|]\|}\|;\|;;\)\@="
-\ contains=@ocamlTypeExpr,ocamlTypeEq,ocamlTypePrivate,ocamlTypeDefDots,ocamlTypeRecordDecl,ocamlTypeSumDecl,ocamlTypeDefAnd,ocamlComment,ocamlPpx
-hi link ocamlTypeDef ocamlTypeCatchAll
+\ matchgroup=ocamlKeyword start="\<type\>\(\_s\+\<nonrec\>\)\?\|\<constraint\>"
+\ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|\<and\>\)\@="
+\ contains=@ocamlTypeExpr,@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar,ocamlPpx,ocamlWhite,ocamlTypeIdentifier,ocamlTypeDefImpl
+\ skipwhite skipempty
+\ nextgroup=ocamlTypeDefAnd
+
+" Type context opened by “type” (type definition) and “constraint” (type
+" constraint).
+" Match the opening keyword and the identifier then jump into
+" ocamlTypeDefImpl.
+syn region ocamlTypeDefAnd
+\ matchgroup=ocamlKeyword start="\<and\>"
+\ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|\<and\>\)\@="
+\ contains=@ocamlTypeExpr,@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar,ocamlPpx,ocamlWhite,ocamlTypeIdentifier,ocamlTypeDefImpl
+\ skipwhite skipempty
+\ nextgroup=ocamlTypeDefAnd
+syn cluster ocamlTypeContained add=ocamlTypeDefAnd
+
+" Exception definitions. Like ocamlTypeDef, jump into ocamlTypeDefImpl.
+syn region ocamlExceptionDef
+\ matchgroup=ocamlKeyword start="\<exception\>"
+\ matchgroup=ocamlConstructor end="\u\(\w\|'\)*\>"
+\ contains=@ocamlAllErrs,ocamlComment,ocamlTypeVariance,ocamlTypeVar,ocamlPpx
+\ skipwhite skipempty
+\ nextgroup=ocamlTypeDefImpl
+
 syn cluster ocamlTypeContained add=ocamlTypePrivate
 syn keyword ocamlTypePrivate contained private
 hi link ocamlTypePrivate ocamlKeyword
-syn cluster ocamlTypeContained add=ocamlTypeDefAnd
-syn keyword ocamlTypeDefAnd contained and
-hi link ocamlTypeDefAnd ocamlKeyword
 syn cluster ocamlTypeContained add=ocamlTypeDefDots
 syn match ocamlTypeDefDots contained "\.\."
 hi link ocamlTypeDefDots ocamlKeyChar
@@ -500,9 +530,7 @@ syn match ocamlKeyword "(\_s*exception\>"lc=1
 " Type context opened by “:” (countless kinds of type annotations) and “:>”
 " (type coercions)
 syn region ocamlTypeAnnot matchgroup=ocamlKeyChar start=":\(>\|\_s*type\>\|[>:=]\@!\)"
-\ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|)\|]\|}\|;\|;;\)\@="
-\ matchgroup=NONE end="\(;\|}\)\@="
-\ matchgroup=NONE end="\(=\|:>\)\@="
+\ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|\<and\>\|)\|]\|}\|;\|;;\|=\|:>\)\@="
 \ contains=@ocamlTypeExpr,ocamlComment,ocamlPpx
 hi link ocamlTypeAnnot ocamlTypeCatchAll
 
