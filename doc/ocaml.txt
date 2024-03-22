@@ -9,6 +9,13 @@ highlighted. You can turn on highlighting of operators by defining:
 
   let g:ocaml_highlight_operators = 1
 
+                                                         *g:odoc_html_support*
+
+By default HTML code inlined in OCamldoc/Odoc syntax is not highlighted to
+avoid loading the HTML syntax. You can turn on HTML highlighting by defining:
+
+  let g:odoc_html_support = 1
+
                                            *g:ocaml_compiler_compact_messages*
 
 By default the output of the OCaml compiler is filtered to keep only the
