@@ -6,6 +6,7 @@
 "               Issac Trotts      <ijtrotts@ucdavis.edu>
 " URL:          https://github.com/ocaml/vim-ocaml
 " Last Change:
+"               2024 Jan 25 - Add OCamldoc/Odoc highlighting (Samuel Hym, Nicolas Osborne)
 "               2019 Nov 05 - Accurate type highlighting (Maëlan)
 "               2018 Nov 08 - Improved highlighting of operators (Maëlan)
 "               2018 Apr 22 - Improved support for PPX (Andrey Popp)
@@ -86,11 +87,21 @@ syn region   ocamlNone transparent matchgroup=ocamlEncl start="{" matchgroup=oca
 syn region   ocamlNone transparent matchgroup=ocamlEncl start="\[" matchgroup=ocamlEncl end="\]" contains=ALLBUT,@ocamlContained,ocamlBrackErr
 syn region   ocamlNone transparent matchgroup=ocamlEncl start="\[|" matchgroup=ocamlEncl end="|\]" contains=ALLBUT,@ocamlContained,ocamlArrErr
 
-
-" Comments
-syn region   ocamlComment start="(\*" end="\*)" contains=@Spell,ocamlComment,ocamlTodo
+" Comments and documentation
 syn keyword  ocamlTodo contained TODO FIXME XXX NOTE
 
+syn cluster ocamlCommentLike contains=ocamlComment,ocamlCommentInDoc,ocamlDocumentation,ocamlStopComment
+
+if !exists('odoc_syntax_loading')
+  " Load odoc syntax only when we are not in a *.mld file
+  syn region   ocamlComment start="(\*" end="\*)" contains=@Spell,ocamlComment,ocamlTodo
+  syn include  @ocamlOdoc syntax/odoc.vim
+  syn region   ocamlDocumentation matchgroup=ocamlDocEncl start="(\*\*[*)]\@!" end="\*)" contains=@ocamlOdoc,ocamlCommentInDoc,@Spell,ocamlTodo
+else
+  syn region   ocamlCommentInDoc start="(\*" end="\*)" contains=@Spell,ocamlTodo,ocamlCommentInDoc
+endif
+
+syn match    ocamlStopComment "(\*\*/\*\*)"
 
 " Objects
 syn region   ocamlEnd matchgroup=ocamlObject start="\<object\>" matchgroup=ocamlObject end="\<end\>" contains=ALLBUT,@ocamlContained,ocamlEndErr
@@ -129,9 +140,9 @@ syn match    ocamlKeyword "\<include\>" skipwhite skipempty nextgroup=ocamlModPa
 
 " "module" - somewhat complicated stuff ;-)
 " 2022-10: please document it?
-syn region   ocamlModule matchgroup=ocamlKeyword start="\<module\>" matchgroup=ocamlModule end="\<_\|\u\(\w\|'\)*\>" contains=@ocamlAllErrs,ocamlComment skipwhite skipempty nextgroup=ocamlPreDef
-syn region   ocamlPreDef start="."me=e-1 end="[a-z:=)]\@=" contained contains=@ocamlAllErrs,ocamlComment,ocamlModParam,ocamlGenMod,ocamlModTypeRestr nextgroup=ocamlModTypePre,ocamlModPreRHS
-syn region   ocamlModParam start="(\*\@!" end=")" contained contains=ocamlGenMod,ocamlModParam,ocamlModParam1,ocamlSig,ocamlVal
+syn region   ocamlModule matchgroup=ocamlKeyword start="\<module\>" matchgroup=ocamlModule end="\<_\|\u\(\w\|'\)*\>" contains=@ocamlAllErrs,@ocamlCommentLike skipwhite skipempty nextgroup=ocamlPreDef
+syn region   ocamlPreDef start="."me=e-1 end="[a-z:=)]\@=" contained contains=@ocamlAllErrs,@ocamlCommentLike,ocamlModParam,ocamlGenMod,ocamlModTypeRestr nextgroup=ocamlModTypePre,ocamlModPreRHS
+syn region   ocamlModParam start="(\*\@!" end=")" contained contains=ocamlGenMod,ocamlModParam1,ocamlSig,ocamlVal
 syn match    ocamlModParam1 "\<\u\(\w\|'\)*\>" contained skipwhite skipempty
 syn match    ocamlGenMod "()" contained skipwhite skipempty
 
@@ -140,11 +151,11 @@ syn match    ocamlModTypeRestr "\<\w\(\w\|'\)*\( *\. *\w\(\w\|'\)*\)*\>" contain
 
 syn match    ocamlModPreRHS "=" contained skipwhite skipempty nextgroup=ocamlModParam,ocamlFullMod
 syn keyword  ocamlKeyword val
-syn region   ocamlVal matchgroup=ocamlKeyword start="\<val\>" matchgroup=ocamlLCIdentifier end="\<\l\(\w\|'\)*\>" contains=@ocamlAllErrs,ocamlComment,ocamlFullMod skipwhite skipempty nextgroup=ocamlModTypePre
-syn region   ocamlModRHS start="." end=". *\w\|([^*]"me=e-2 contained contains=ocamlComment skipwhite skipempty nextgroup=ocamlModParam,ocamlFullMod
+syn region   ocamlVal matchgroup=ocamlKeyword start="\<val\>" matchgroup=ocamlLCIdentifier end="\<\l\(\w\|'\)*\>" contains=@ocamlAllErrs,@ocamlCommentLike,ocamlFullMod skipwhite skipempty nextgroup=ocamlModTypePre
+syn region   ocamlModRHS start="." end=". *\w\|([^*]"me=e-2 contained contains=@ocamlCommentLike skipwhite skipempty nextgroup=ocamlModParam,ocamlFullMod
 syn match    ocamlFullMod "\<\u\(\w\|'\)*\( *\. *\u\(\w\|'\)*\)*" contained skipwhite skipempty nextgroup=ocamlFuncWith
 
-syn region   ocamlFuncWith start="([*)]\@!" end=")" contained contains=ocamlComment,ocamlWith,ocamlStruct skipwhite skipempty nextgroup=ocamlFuncWith
+syn region   ocamlFuncWith start="([*)]\@!" end=")" contained contains=@ocamlCommentLike,ocamlWith,ocamlStruct skipwhite skipempty nextgroup=ocamlFuncWith
 
 syn region   ocamlModTRWith start="(\*\@!" end=")" contained contains=@ocamlAENoParen,ocamlWith
 syn match    ocamlWith "\<\(\u\(\w\|'\)* *\. *\)*\w\(\w\|'\)*\>" contained skipwhite skipempty nextgroup=ocamlWithRest
@@ -157,10 +168,10 @@ syn region   ocamlStruct matchgroup=ocamlStructEncl start="\<\(module\s\+\)\=str
 syn region   ocamlSig matchgroup=ocamlSigEncl start="\<sig\>" matchgroup=ocamlSigEncl end="\<end\>" contains=ALLBUT,@ocamlContained,ocamlEndErr
 
 " "functor"
-syn region   ocamlFunctor start="\<functor\>" matchgroup=ocamlKeyword end="->" contains=@ocamlAllErrs,ocamlComment,ocamlModParam,ocamlGenMod skipwhite skipempty nextgroup=ocamlStruct,ocamlSig,ocamlFuncWith,ocamlFunctor
+syn region   ocamlFunctor start="\<functor\>" matchgroup=ocamlKeyword end="->" contains=@ocamlAllErrs,@ocamlCommentLike,ocamlModParam,ocamlGenMod skipwhite skipempty nextgroup=ocamlStruct,ocamlSig,ocamlFuncWith,ocamlFunctor
 
 " "module type"
-syn region   ocamlModTypeOf start="\<module\s\+type\(\s\+of\)\=\>" matchgroup=ocamlModule end="\<\w\(\w\|'\)*\>" contains=ocamlComment skipwhite skipempty nextgroup=ocamlMTDef
+syn region   ocamlModTypeOf start="\<module\s\+type\(\s\+of\)\=\>" matchgroup=ocamlModule end="\<\w\(\w\|'\)*\>" contains=@ocamlCommentLike skipwhite skipempty nextgroup=ocamlMTDef
 syn match    ocamlMTDef "=\s*\w\(\w\|'\)*\>"hs=s+1,me=s+1 skipwhite skipempty nextgroup=ocamlFullMod
 
 " Quoted strings
@@ -323,7 +334,7 @@ syn cluster ocamlTypeExpr add=ocamlTypeParen
 syn region ocamlTypeParen contained transparent
 \ matchgroup=ocamlEncl start="(\*\@!"
 \ matchgroup=ocamlEncl end=")"
-\ contains=@ocamlTypeExpr,ocamlComment,ocamlPpx
+\ contains=@ocamlTypeExpr,@ocamlCommentLike,ocamlPpx
 
 syn cluster ocamlTypeExpr add=ocamlTypeKeyChar,ocamlTypeAs
 syn match    ocamlTypeKeyChar  contained  "->"
@@ -386,7 +397,7 @@ syn cluster ocamlTypeExpr add=ocamlTypeObject
 syn region ocamlTypeObject contained
 \ matchgroup=ocamlEncl start="<"
 \ matchgroup=ocamlEncl end=">"
-\ contains=ocamlTypeObjectDots,ocamlLCIdentifier,ocamlTypeObjectAnnot,ocamlTypeBlank,ocamlComment,ocamlPpx
+\ contains=ocamlTypeObjectDots,ocamlLCIdentifier,ocamlTypeObjectAnnot,ocamlTypeBlank,@ocamlCommentLike,ocamlPpx
 hi link ocamlTypeObject ocamlTypeCatchAll
 syn cluster ocamlTypeContained add=ocamlTypeObjectDots
 syn match ocamlTypeObjectDots contained "\.\."
@@ -395,7 +406,7 @@ syn cluster ocamlTypeContained add=ocamlTypeObjectAnnot
 syn region ocamlTypeObjectAnnot contained
 \ matchgroup=ocamlKeyChar start=":"
 \ matchgroup=ocamlKeyChar end=";\|>\@="
-\ contains=@ocamlTypeExpr,ocamlComment,ocamlPpx
+\ contains=@ocamlTypeExpr,@ocamlCommentLike,ocamlPpx
 hi link ocamlTypeObjectAnnot ocamlTypeCatchAll
 
 " Record type definition
@@ -403,7 +414,7 @@ syn cluster ocamlTypeContained add=ocamlTypeRecordDecl
 syn region ocamlTypeRecordDecl contained
 \ matchgroup=ocamlEncl start="{"
 \ matchgroup=ocamlEncl end="}"
-\ contains=ocamlTypeMutable,ocamlLCIdentifier,ocamlTypeRecordAnnot,ocamlTypeBlank,ocamlComment,ocamlPpx
+\ contains=ocamlTypeMutable,ocamlLCIdentifier,ocamlTypeRecordAnnot,ocamlTypeBlank,@ocamlCommentLike,ocamlPpx
 hi link ocamlTypeRecordDecl ocamlTypeCatchAll
 syn cluster ocamlTypeContained add=ocamlTypeMutable
 syn keyword ocamlTypeMutable contained mutable
@@ -412,7 +423,7 @@ syn cluster ocamlTypeContained add=ocamlTypeRecordAnnot
 syn region ocamlTypeRecordAnnot contained
 \ matchgroup=ocamlKeyChar start=":"
 \ matchgroup=ocamlKeyChar end=";\|}\@="
-\ contains=@ocamlTypeExpr,ocamlComment,ocamlPpx
+\ contains=@ocamlTypeExpr,@ocamlCommentLike,ocamlPpx
 hi link ocamlTypeRecordAnnot ocamlTypeCatchAll
 
 " Polymorphic variant types
@@ -421,7 +432,7 @@ syn cluster ocamlTypeExpr add=ocamlTypeVariant
 syn region ocamlTypeVariant contained
 \ matchgroup=ocamlEncl start="\[>" start="\[<" start="\[@\@!"
 \ matchgroup=ocamlEncl end="\]"
-\ contains=ocamlTypeVariantKeyChar,ocamlTypeVariantConstr,ocamlTypeVariantAnnot,ocamlTypeBlank,ocamlComment,ocamlPpx
+\ contains=ocamlTypeVariantKeyChar,ocamlTypeVariantConstr,ocamlTypeVariantAnnot,ocamlTypeBlank,@ocamlCommentLike,ocamlPpx
 hi link ocamlTypeVariant ocamlTypeCatchAll
 syn cluster ocamlTypeContained add=ocamlTypeVariantKeyChar
 syn match ocamlTypeVariantKeyChar contained "|"
@@ -434,7 +445,7 @@ syn cluster ocamlTypeContained add=ocamlTypeVariantAnnot
 syn region ocamlTypeVariantAnnot contained
 \ matchgroup=ocamlKeyword start="\<of\>"
 \ matchgroup=ocamlKeyChar end="|\|>\|\]\@="
-\ contains=@ocamlTypeExpr,ocamlTypeAmp,ocamlComment,ocamlPpx
+\ contains=@ocamlTypeExpr,ocamlTypeAmp,@ocamlCommentLike,ocamlPpx
 hi link ocamlTypeVariantAnnot ocamlTypeCatchAll
 syn cluster ocamlTypeContained add=ocamlTypeAmp
 syn match ocamlTypeAmp contained "&"
@@ -449,7 +460,7 @@ syn region ocamlTypeSumDecl contained
 \ matchgroup=ocamlTypeSumConstr start="(\_s*)" start="\[\_s*]" start="(\_s*::\_s*)"
 \ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|)\|]\|}\|;\|;;\|=\)\@="
 \ matchgroup=NONE end="\(\<and\>\)\@="
-\ contains=ocamlTypeSumBar,ocamlTypeSumConstr,ocamlTypeSumAnnot,ocamlTypeBlank,ocamlComment,ocamlPpx
+\ contains=ocamlTypeSumBar,ocamlTypeSumConstr,ocamlTypeSumAnnot,ocamlTypeBlank,@ocamlCommentLike,ocamlPpx
 hi link ocamlTypeSumDecl ocamlTypeCatchAll
 syn cluster ocamlTypeContained add=ocamlTypeSumBar
 syn match ocamlTypeSumBar contained "|"
@@ -469,7 +480,7 @@ syn region ocamlTypeSumAnnot contained
 \ matchgroup=NONE end="|\@="
 \ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|)\|]\|}\|;\|;;\)\@="
 \ matchgroup=NONE end="\(\<and\>\)\@="
-\ contains=@ocamlTypeExpr,ocamlTypeRecordDecl,ocamlComment,ocamlPpx
+\ contains=@ocamlTypeExpr,ocamlTypeRecordDecl,@ocamlCommentLike,ocamlPpx
 hi link ocamlTypeSumAnnot ocamlTypeCatchAll
 
 " Type context opened by “type” (type definition), “constraint” (type
@@ -477,7 +488,7 @@ hi link ocamlTypeSumAnnot ocamlTypeCatchAll
 syn region ocamlTypeDef
 \ matchgroup=ocamlKeyword start="\<type\>\(\_s\+\<nonrec\>\)\?\|\<constraint\>\|\<exception\>"
 \ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|)\|]\|}\|;\|;;\)\@="
-\ contains=@ocamlTypeExpr,ocamlTypeEq,ocamlTypePrivate,ocamlTypeDefDots,ocamlTypeRecordDecl,ocamlTypeSumDecl,ocamlTypeDefAnd,ocamlComment,ocamlPpx
+\ contains=@ocamlTypeExpr,ocamlTypeEq,ocamlTypePrivate,ocamlTypeDefDots,ocamlTypeRecordDecl,ocamlTypeSumDecl,ocamlTypeDefAnd,@ocamlCommentLike,ocamlPpx
 hi link ocamlTypeDef ocamlTypeCatchAll
 syn cluster ocamlTypeContained add=ocamlTypePrivate
 syn keyword ocamlTypePrivate contained private
@@ -503,7 +514,7 @@ syn region ocamlTypeAnnot matchgroup=ocamlKeyChar start=":\(>\|\_s*type\>\|[>:=]
 \ matchgroup=NONE end="\(\<type\>\|\<exception\>\|\<val\>\|\<module\>\|\<class\>\|\<method\>\|\<constraint\>\|\<inherit\>\|\<object\>\|\<struct\>\|\<open\>\|\<include\>\|\<let\>\|\<external\>\|\<in\>\|\<end\>\|)\|]\|}\|;\|;;\)\@="
 \ matchgroup=NONE end="\(;\|}\)\@="
 \ matchgroup=NONE end="\(=\|:>\)\@="
-\ contains=@ocamlTypeExpr,ocamlComment,ocamlPpx
+\ contains=@ocamlTypeExpr,@ocamlCommentLike,ocamlPpx
 hi link ocamlTypeAnnot ocamlTypeCatchAll
 
 " Type annotation that gives the return type of a `fun` keyword
@@ -512,7 +523,7 @@ syn cluster ocamlTypeContained add=ocamlFunTypeAnnot
 syn region ocamlFunTypeAnnot contained containedin=ocamlFun
 \ matchgroup=ocamlKeyChar start=":"
 \ matchgroup=NONE end="\(->\)\@="
-\ contains=@ocamlTypeExpr,ocamlComment,ocamlPpx
+\ contains=@ocamlTypeExpr,@ocamlCommentLike,ocamlPpx
 hi link ocamlFunTypeAnnot ocamlTypeCatchAll
 
 " Module paths (including functors) in types.
@@ -525,14 +536,14 @@ syn match ocamlTypeModPath contained "\<\u\(\w\|'\)*\_s*\."
 syn region ocamlTypeModPath contained transparent
 \ matchgroup=ocamlModPath start="\<\u\(\w\|'\)*\_s*(\*\@!"
 \ matchgroup=ocamlModPath end=")\_s*\."
-\ contains=ocamlTypeDotlessModPath,ocamlTypeBlank,ocamlComment,ocamlPpx
+\ contains=ocamlTypeDotlessModPath,ocamlTypeBlank,@ocamlCommentLike,ocamlPpx
 hi link ocamlTypeModPath ocamlModPath
 syn cluster ocamlTypeContained add=ocamlTypeDotlessModPath
 syn match ocamlTypeDotlessModPath contained "\<\u\(\w\|'\)*\_s*\.\?"
 syn region ocamlTypeDotlessModPath contained transparent
 \ matchgroup=ocamlModPath start="\<\u\(\w\|'\)*\_s*(\*\@!"
 \ matchgroup=ocamlModPath end=")\_s*\.\?"
-\ contains=ocamlTypeDotlessModPath,ocamlTypeBlank,ocamlComment,ocamlPpx
+\ contains=ocamlTypeDotlessModPath,ocamlTypeBlank,@ocamlCommentLike,ocamlPpx
 hi link ocamlTypeDotlessModPath ocamlTypeModPath
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -577,6 +588,9 @@ hi def link ocamlCharErr	   Error
 hi def link ocamlErr	   Error
 
 hi def link ocamlComment	   Comment
+hi def link ocamlDocEncl	ocamlComment
+hi def link ocamlCommentInDoc	   ocamlComment
+hi def link ocamlStopComment PreProc
 hi def link ocamlShebang    ocamlComment
 
 hi def link ocamlModPath	   Include
@@ -662,7 +676,11 @@ hi def link ocamlPpxEncl       ocamlEncl
 
 let b:current_syntax = "ocaml"
 
-let &cpo = s:keepcpo
-unlet s:keepcpo
+" Because of the nesting (ocaml in odoc in ocaml), s:keepcpo might have been
+" unlet already
+if exists('s:keepcpo')
+  let &cpo = s:keepcpo
+  unlet s:keepcpo
+endif
 
 " vim: ts=8
